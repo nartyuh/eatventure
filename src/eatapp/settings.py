@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'testapp.apps.TestappConfig'
 ]
 
 MIDDLEWARE = [
@@ -78,9 +79,6 @@ DATABASES = {
     'default': dj_database_url.config(default='postgres://vnvriiwrjawvgl:4e22ceb6e4ba83c9881f37c7653a20b919210ebfc3859096e9381b67bc613d64@ec2-18-213-176-229.compute-1.amazonaws.com:5432/danpgrvb6ufbei', conn_max_age=600, ssl_require=True)
 }
 
-# Connect to Heroku Postgres
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -105,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'PDT'
+TIME_ZONE = 'America/Vancouver'
 
 USE_I18N = True
 
