@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -12,7 +13,13 @@ class Postcode(models.Model):
     state = models.CharField(max_length=20)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
 
+
 class Address(models.Model):
+    address_id = models.AutoField(auto_created=True, primary_key=True)
+    unit_num = models.CharField(max_length=10, null=True)
     street_num = models.CharField(max_length=10)
     street_name = models.CharField(max_length=30)
-    postcode = models.ForeignKey(Postcode, on_delete=models.CASCADE, default='should not be null')
+    postcode = models.ForeignKey(Postcode, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ['unit_num','street_num', 'street_name', 'postcode']
