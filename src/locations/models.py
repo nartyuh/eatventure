@@ -5,6 +5,9 @@ from django.core.exceptions import ValidationError
 
 class Country(models.Model):
     country_name = models.CharField(primary_key=True, max_length=20)
+    
+    def __str__(self):
+        return self.country_name
 
 
 class Postcode(models.Model):
@@ -12,6 +15,9 @@ class Postcode(models.Model):
     city = models.CharField(max_length=20)
     state = models.CharField(max_length=20)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.city + ', ' + self.state + ', ' + self.country + ' ' + self.postcode
 
 
 class Address(models.Model):
@@ -23,3 +29,7 @@ class Address(models.Model):
 
     class Meta:
         unique_together = ['unit_num','street_num', 'street_name', 'postcode']
+
+    def __str__(self):
+        return self.unit_num + ', ' + self.street_num + ' ' + self.street_name + ', ' + self.postcode
+        

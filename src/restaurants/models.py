@@ -7,6 +7,9 @@ class FoodCategory(models.Model):
     food_category_name = models.CharField(primary_key=True, max_length=20)
     disclaimer = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.food_category_name + ': ' + self.disclaimer
+
 
 class EstablishmentType(models.Model):
     establishment_type_id = models.AutoField(auto_created=True, primary_key=True)
@@ -15,6 +18,9 @@ class EstablishmentType(models.Model):
 
     class Meta:
         unique_together = ['food_category_name', 'atmosphere']
+
+    def __str__(self):
+        return self.atmosphere + ' ' + self.food_category_name
 
 
 class Cuisine(models.Model):
@@ -25,6 +31,9 @@ class Cuisine(models.Model):
     class Meta: 
         unique_together = ['food_category_name', 'nationality']
 
+    def __str__(self):
+        return self.nationality + ' ' + self.food_category_name
+
 
 class RatingStats(models.Model):
     rating_stats_id = models.AutoField(auto_created=True, primary_key=True)
@@ -32,11 +41,16 @@ class RatingStats(models.Model):
     num_of_reviews = models.IntegerField(default=0)
     recommended = models.BooleanField()
 
+    def __str__(self):
+        return self.rating + ' stars, ' + self.num_of_reviews + ' reviews'
 
 class BestSellingItem(models.Model):
     item_id = models.AutoField(auto_created=True, primary_key=True)
     item_name = models.CharField(max_length=50)
     item_description = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.item_name + ': ' + self.item_description
 
 
 class Restaurant(models.Model):
@@ -60,6 +74,9 @@ class Restaurant(models.Model):
     class Meta:
         unique_together = ['restaurant_name', 'address_id']
 
+    def __str__(self):
+        return self.restaurant_name + ', ' + self.address_id + ', ratings: ' + self.rating_stats_id
+
 
 class Discount(models.Model):
     discount_code = models.CharField(max_length=10)
@@ -69,3 +86,6 @@ class Discount(models.Model):
 
     class Meta:
         unique_together = ['discount_code', 'restaurant_id']
+
+    def __str__(self):
+        return self.restaurant_id + ', ' + self.discount_code + ' expires on ' + self.expiry_date 
