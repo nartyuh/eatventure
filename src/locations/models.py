@@ -16,20 +16,22 @@ class Postcode(models.Model):
     state = models.CharField(max_length=20)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ['city', 'state', 'country']
+
     def __str__(self):
         return self.city + ', ' + self.state + ', ' + self.country + ' ' + self.postcode
 
 
 class Address(models.Model):
-    address_id = models.AutoField(auto_created=True, primary_key=True)
-    unit_num = models.CharField(max_length=10, null=True)
+    address_id = models.CharField(primary_key=True, max_length=50)
     street_num = models.CharField(max_length=10)
     street_name = models.CharField(max_length=30)
     postcode = models.ForeignKey(Postcode, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ['unit_num','street_num', 'street_name', 'postcode']
+        unique_together = ['street_num', 'street_name', 'postcode']
 
     def __str__(self):
-        return self.unit_num + ', ' + self.street_num + ' ' + self.street_name + ', ' + self.postcode
+        return self.street_num + ' ' + self.street_name + ', ' + self.postcode
         
