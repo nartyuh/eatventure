@@ -12,14 +12,30 @@
 <body>
     <section style="height: 4%;">
         <form class="form-inline md-form mr-auto mb-4">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" id="search-bar">
-            <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="button" onclick="get_search_value();">Search</button>
+            <input class="form-control mr-sm-2" type="text" placeholder="Restaurant name" aria-label="Search" id="restaurant-search">
+            <input class="form-control mr-sm-2" type="text" placeholder="Street name" aria-label="Search" id="street-name-search">
+            <input class="form-control mr-sm-2" type="text" placeholder="Postcode" aria-label="Search" id="postcode-search">
+            <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="button" onclick="search();">Search</button>
         </form>
     </section>
     <script>
-        function get_search_value() {
-            var search_value = document.getElementById("search-bar").value;
-            alert(search_value);
+        function search() {
+            var res_name_value = document.getElementById("restaurant-search").value.replace(/ /g, "-");
+            if (res_name_value.length == 0) {
+                res_name_value = "-";
+            }
+            var street_name_value = document.getElementById('street-name-search').value.replace(/ /g, "-");
+            if (street_name_value.length == 0) {
+                street_name_value = "-";
+            }
+            var postcode_value = document.getElementById('postcode-search').value.replace(/ /g, "-");
+            if (postcode_value.length == 0) {
+                postcode_value = "-"
+            }
+            var host_url = window.location.host;
+            request_url = "http://" + host_url + "/search/" + res_name_value + "/" + street_name_value + "/" + postcode_value + "/";
+            console.log(request_url);
+            window.location.assign(request_url);
         }
     </script>
     <section style="height: 96%;">
