@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'locations.apps.LocationsConfig',
     'restaurants.apps.RestaurantsConfig',
+    'frontend',
 ]
 
 MIDDLEWARE = [

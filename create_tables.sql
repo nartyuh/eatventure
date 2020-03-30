@@ -48,3 +48,54 @@ ALTER TABLE "restaurants_coordinates" ADD CONSTRAINT "restaurants_coordina_coord
 CREATE INDEX "restaurants_coordinates_coordinates_id_id_5c1c3ad5_like" ON "restaurants_coordinates" ("coordinates_id_id" varchar_pattern_ops);
 ALTER TABLE "restaurants_ratingstats" ADD CONSTRAINT "restaurants_ratingst_rating_stats_id_id_4b2566be_fk_restauran" FOREIGN KEY ("rating_stats_id_id") REFERENCES "restaurants_restaurant" ("restaurant_id") DEFERRABLE INITIALLY DEFERRED;
 CREATE INDEX "restaurants_ratingstats_rating_stats_id_id_4b2566be_like" ON "restaurants_ratingstats" ("rating_stats_id_id" varchar_pattern_ops);
+--
+-- Alter field city on postcode
+--
+ALTER TABLE "locations_postcode" ALTER COLUMN "city" TYPE varchar(50);
+--
+-- Alter field state on postcode
+--
+ALTER TABLE "locations_postcode" ALTER COLUMN "state" TYPE varchar(50);
+--
+-- Alter field city on postcode
+--
+ALTER TABLE "locations_postcode" ALTER COLUMN "city" TYPE varchar(100);
+--
+-- Alter field state on postcode
+--
+ALTER TABLE "locations_postcode" ALTER COLUMN "state" TYPE varchar(100);
+--
+-- Alter unique_together for postcode (0 constraint(s))
+--
+ALTER TABLE "locations_postcode" DROP CONSTRAINT "locations_postcode_city_state_country_id_ef0ab36c_uniq";
+--
+-- Alter field address_id on address
+--
+ALTER TABLE "locations_address" ALTER COLUMN "address_id" TYPE varchar(100);
+--
+-- Alter field street_name on address
+--
+ALTER TABLE "locations_address" ALTER COLUMN "street_name" TYPE varchar(100);
+--
+-- Alter field street_num on address
+--
+ALTER TABLE "locations_address" ALTER COLUMN "street_num" TYPE varchar(100);
+--
+-- Alter field postcode on postcode
+--
+SET CONSTRAINTS "locations_address_postcode_id_4b30f849_fk_locations" IMMEDIATE; ALTER TABLE "locations_address" DROP CONSTRAINT "locations_address_postcode_id_4b30f849_fk_locations";
+ALTER TABLE "locations_postcode" ALTER COLUMN "postcode" TYPE varchar(100);
+ALTER TABLE "locations_address" ALTER COLUMN "postcode_id" TYPE varchar(100) USING "postcode_id"::varchar(100);
+ALTER TABLE "locations_address" ADD CONSTRAINT "locations_address_postcode_id_4b30f849_fk" FOREIGN KEY ("postcode_id") REFERENCES "locations_postcode" ("postcode") DEFERRABLE INITIALLY DEFERRED;
+--
+-- Alter field item_name on bestsellingitem
+--
+ALTER TABLE "restaurants_bestsellingitem" ALTER COLUMN "item_name" TYPE varchar(100);
+--
+-- Alter field restaurant_name on restaurant
+--
+ALTER TABLE "restaurants_restaurant" ALTER COLUMN "restaurant_name" TYPE varchar(100);
+--
+-- Alter field price_range on restaurant
+--
+ALTER TABLE "restaurants_restaurant" ALTER COLUMN "price_range" TYPE varchar(10);
