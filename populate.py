@@ -139,7 +139,7 @@ assert len(aggregate_ratings) == len(num_of_reviewss) == len(best_selling_item_i
 assert len(item_names) == len(item_descriptions) == len(coordinate_ids) == len(longitudes) == len(latitudes)
 
 
-# [print(tpl) for tpl in list(zip(restaurant_ids, restaurant_names, price_ranges, address_ids))]
+[print(tpl) for tpl in list(zip(restaurant_ids, restaurant_names, price_ranges, address_ids))]
 # [print(tpl) for tpl in list(zip(rating_ids, aggregate_ratings, num_of_reviewss))]
 # [print(tpl) for tpl in list(zip(best_selling_item_ids, item_names, item_descriptions))]
 # [print(tpl) for tpl in list(zip(coordinate_ids, longitudes, latitudes))]
@@ -154,8 +154,72 @@ assert len(item_names) == len(item_descriptions) == len(coordinate_ids) == len(l
 #################################################################################
 #################################################################################
 
+# Connect to Postgres DB
 conn = psycopg2.connect(os.environ['EATVENTURE_DATABASE_URL'], sslmode='require')
 
+# locations
+country_tb = 'locations_country'
+postcode_tb = 'locations_postcode'
+address_tb = 'locations_address'
+
+# restaurants
+restaurant_tb = 'restaurants_restaurant'
+ratingstats_tb = 'restaurants_ratingstats'
+coordinates_tb = 'restaurants_coordinates'
+best_selling_item_tb = 'restaurants_bestsellingitem'
+
+# initialize cursor
+cur = conn.cursor()
+
+# check if value is already in table
+def check_exist(table, key, value):
+    select_query = 'select ' + key + ' from ' + table + " where " + key + " = '" +  value + "'"
+    cur.execute(select_query)
+    results = cur.fetchall()
+    return results
+
+def insert_country(country):
+    # check if value is already in table
+    results = check_exist(country_tb, 'country_name', country)
+    # if not, insert value into table
+    if len(results) == 0:
+        insert_query = 'insert into ' + country_tb + '(country_name)' + " values ('" + country + "')"
+        cur.execute(insert_query)
+
+def insert_postcode(postcode, city, state, country):
+    # check if value is already in table
+    results = check_exist(postcode_tb, 'postcode', postcode)
+    if len(results) == 0:
+        insert_query = 'insert into ' + postcode_tb +  '(postcode, city, state, country_id) ' + "values (" + "'" + postcode + "'," + "'" + city + "'," + "'" + state + "'," + "'" + country + "'" + ")"
+        cur.execute(insert_query)
+
+def insert_address(address_id, street_num, street_name, postcode):
+    # check if value is already in table
+    results = check_exist(address_tb, 'address_id', address_id)
+    if len(results) == 0:
+        insert_query = 'insert into ' + address_tb + '(address_id, street_num, street_name, postcode_id) ' + "values (" + "'" + address_id + "'," + "'" + street_num + "'," + "'" + street_name + "'," + "'" + postcode + "'" + ")"
+        cur.execute(insert_query)
+
+# insert Canada to country table
+insert_country('Vietnam')
+insert_postcode('700000', 'Ho Chi Minh', 'Ho Chi Minh', 'Vietnam')
+address = '123 Huy Tran, 700000'
+address_id = hashlib.sha1((address).encode('utf-8')).hexdigest()
+insert_address(address_id, '123', 'Huy Tran', '700000')
+
+
+
+cur.execute('select * from ' + country_tb)
+rows = cur.fetchall()
+print(rows)
+cur.execute('select * from ' + postcode_tb)
+rows = cur.fetchall()
+print(rows)
+cur.execute('select * from ' + address_tb)
+rows = cur.fetchall()
+print(rows)
+
+conn.commit()
 
 
 conn.close()
