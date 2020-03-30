@@ -269,7 +269,7 @@ insert_bestsellingitem('1', "Huy's Special Curry", "Huy's best recipe")
 '''
 
 i = 0
-while i < len(restaurant_ids):
+while i < 1501: # due to Heroku Postgres free plan only allows 10000 rows, we will only insert first 1500 entires 
     country = insert_country(country)
     postcode = insert_postcode(postcodes[i], cities[i], provinces[i], country)
     address_id = insert_address(address_ids[i], street_nums[i], street_names[i], postcode)
@@ -285,14 +285,15 @@ while i < len(restaurant_ids):
         print(coordinate_id)
         print(best_selling_item_id)
 
+    # save changes in case of connection failure
     if i % 500 == 0:
-        conn.commit()
+        conn.commit() 
 
     ## moving to datum
     i += 1
     print(i)
 
-
+'''
 cur.execute('select * from ' + country_tb)
 rows = cur.fetchall()
 print(rows)
@@ -314,6 +315,7 @@ print(rows)
 cur.execute('select * from ' + best_selling_item_tb)
 rows = cur.fetchall()
 print(rows)
+'''
 
 conn.commit()
 
