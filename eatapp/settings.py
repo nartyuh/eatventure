@@ -21,13 +21,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'mk_dqtu8j#&q=p76$#(&c)khx@ra+@&q9$q3@zmz-$aesp%0=&'
+SECRET_KEY = os.environ['EATVENTURE_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'eatventure.herokuapp.com/',
+    'eatventure.herokuapp.com',
 ]
 
 
