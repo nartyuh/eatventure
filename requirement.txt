@@ -5,3 +5,5 @@ pypostalcode
 pgeocode
 branca
 folium
+django-heroku
+gunicorn
