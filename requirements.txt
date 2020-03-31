@@ -2,7 +2,6 @@ Django
 dj_database_url
 psycopg2
 pypostalcode
-pgeocode
 branca
 folium
 django-heroku
