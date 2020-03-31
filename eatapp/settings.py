@@ -126,15 +126,6 @@ STATIC_URL = '/static/'
 
 ### Lines added for deploying on heroku
 
-
-# '''
-# from whitenoise.django import DjangoWhiteNoise
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "eatapp.settings")
-
-# application = get_wsgi_application()
-# application = DjangoWhiteNoise(application)
-# '''
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
