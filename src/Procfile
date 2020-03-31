@@ -1,1 +1,0 @@
-web: gunicorn eatapp.wsgi --log-file -

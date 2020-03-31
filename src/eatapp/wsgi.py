@@ -11,12 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-### this line is from setting up deploying on heroku
-from whitenoise.django import DjangoWhiteNoise
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'eatapp.settings')
 
 application = get_wsgi_application()
-
-### this line is from setting up deploying on heroku
-application = DjangoWhiteNoise(application)
