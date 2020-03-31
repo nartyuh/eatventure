@@ -26,7 +26,9 @@ SECRET_KEY = 'mk_dqtu8j#&q=p76$#(&c)khx@ra+@&q9$q3@zmz-$aesp%0=&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'eatventure.herokuapp.com/',
+]
 
 
 # Application definition
