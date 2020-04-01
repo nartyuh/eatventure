@@ -99,3 +99,17 @@ ALTER TABLE "restaurants_restaurant" ALTER COLUMN "restaurant_name" TYPE varchar
 -- Alter field price_range on restaurant
 --
 ALTER TABLE "restaurants_restaurant" ALTER COLUMN "price_range" TYPE varchar(10);
+--
+-- Create model ManagerAccount
+--
+CREATE TABLE "restaurant_management_manageraccount" ("username" varchar(20) NOT NULL PRIMARY KEY, "password" varchar(100) NOT NULL);
+--
+-- Create model MatchManagerToRestaurant
+--
+CREATE TABLE "restaurant_management_matchmanagertorestaurant" ("restaurant_id" varchar(50) NOT NULL PRIMARY KEY, "manager_id" varchar(20) NOT NULL);
+CREATE INDEX "restaurant_management_manageraccount_username_6102326e_like" ON "restaurant_management_manageraccount" ("username" varchar_pattern_ops);
+ALTER TABLE "restaurant_management_matchmanagertorestaurant" ADD CONSTRAINT "restaurant_managemen_restaurant_id_350b6f37_fk_restauran" FOREIGN KEY ("restaurant_id") REFERENCES "restaurants_restaurant" ("restaurant_id") DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "restaurant_management_matchmanagertorestaurant" ADD CONSTRAINT "restaurant_managemen_manager_id_bdff5ada_fk_restauran" FOREIGN KEY ("manager_id") REFERENCES "restaurant_management_manageraccount" ("username") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX "restaurant_management_ma_restaurant_id_350b6f37_like" ON "restaurant_management_matchmanagertorestaurant" ("restaurant_id" varchar_pattern_ops);
+CREATE INDEX "restaurant_management_matc_manager_id_bdff5ada" ON "restaurant_management_matchmanagertorestaurant" ("manager_id");
+CREATE INDEX "restaurant_management_ma_manager_id_bdff5ada_like" ON "restaurant_management_matchmanagertorestaurant" ("manager_id" varchar_pattern_ops);

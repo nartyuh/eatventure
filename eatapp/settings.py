@@ -27,6 +27,7 @@ SECRET_KEY = os.environ['EATVENTURE_SECRET_KEY']
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
     'eatventure.herokuapp.com',
 ]
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'locations.apps.LocationsConfig',
     'restaurants.apps.RestaurantsConfig',
     'frontend',
+    'restaurant_management.apps.RestaurantManagementConfig',
     # added for deployment on heroku
     'whitenoise.runserver_nostatic',
 ]

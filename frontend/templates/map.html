@@ -7,20 +7,10 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-</head>
-
-<body>
-    <section style="height: 4%;">
-        <form class="form-inline md-form mr-auto mb-4">
-            <input class="form-control mr-sm-2" type="text" placeholder="Restaurant name" aria-label="Search" id="restaurant-search">
-            <input class="form-control mr-sm-2" type="text" placeholder="Street name" aria-label="Search" id="street-name-search">
-            <input class="form-control mr-sm-2" type="text" placeholder="Postcode" aria-label="Search" id="postcode-search">
-            <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="button" onclick="search();">Search</button>
-        </form>
-    </section>
     <script>
         function search() {
             var res_name_value = document.getElementById("restaurant-search").value.replace(/ /g, "-");
+            var res_name_value = res_name_value.replace(/'/g, "");
             if (res_name_value.length == 0) {
                 res_name_value = "-";
             }
@@ -38,7 +28,17 @@
             window.location.assign(request_url);
         }
     </script>
-    <section style="height: 96%;">
-        {{ map | safe }}
-    </section>
+</head>
+
+<body>
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light form-inline my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Restaurant name" aria-label="Search" id="restaurant-search">
+            <input class="form-control mr-sm-2" type="text" placeholder="Street name" aria-label="Search" id="street-name-search">
+            <input class="form-control mr-sm-2" type="text" placeholder="Postcode" aria-label="Search" id="postcode-search">
+            <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="button" onclick="search();">Search</button>
+            <p class="aqua-gradient my-0">{{ results_count | safe }}</p>
+        </nav>
+    </div>
+    {{ map | safe }}
 </body>

@@ -71,6 +71,21 @@ def search(requests, restaurant_name, street_name='', postcode=''):
         folium.Marker([latitude, longitude], tooltip='More Info', popup='<strong>' + restaurant_name +
                       '</strong>', icon=folium.Icon(color="lightgray", icon="cutlery", prefix='fa')).add_to(map)
 
-    context = {'map': map.get_root().render()}
+    # cur.execute(
+    #     'select count(*) from (' +
+    #     'select restaurant_name, longitude, latitude ' +
+    #     'from restaurants_restaurant ' +
+    #     'inner join restaurants_coordinates on restaurant_id=coordinates_id_id ' +
+    #     'inner join locations_address on address_id_id=address_id ' +
+    #     'where restaurant_name=' + "'" + restaurant_name.replace("'", "''") + "'" + ' or ' +
+    #            'postcode_id=' + "'" + postcode + "'" + ' or ' +
+    #            'street_name=' + "'" + street_name.replace("'", "''") + "'" +
+    #     ")" + "as results_found"
+    # )
+    # results_count = cur.fetchall()[0][0]
+
+    context = {'map': map.get_root().render(),
+               'results_count': str(len(rows)) + ' results found'
+              }
 
     return render(requests, 'map.html', context)
