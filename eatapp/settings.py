@@ -45,8 +45,6 @@ INSTALLED_APPS = [
     'restaurants.apps.RestaurantsConfig',
     'frontend',
     'restaurant_management.apps.RestaurantManagementConfig',
-    # added for deployment on heroku
-    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -57,9 +55,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # added for heroku deployment
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'eatapp.urls'
@@ -67,7 +62,7 @@ ROOT_URLCONF = 'eatapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,10 +123,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-### Lines added for deploying on heroku
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
