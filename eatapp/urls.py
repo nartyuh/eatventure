@@ -17,8 +17,9 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('login/', include('restaurant_management.urls')),
     path('', include('frontend.urls')),
     path('search/<slug:restaurant_name>/<slug:street_name>/<slug:postcode>/', include('frontend.urls')),
+    path('login/', include('restaurant_management.urls')),
+    path('login/<slug:username>/<slug:password>/', include('restaurant_management.urls')),
     path('admin/', admin.site.urls),
 ]

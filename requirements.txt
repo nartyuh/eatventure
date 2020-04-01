@@ -6,6 +6,4 @@ branca
 folium
 django-heroku
 gunicorn
-whitenoise
-python-decouple
-whitenoise[brotli]
+pandas

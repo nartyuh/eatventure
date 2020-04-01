@@ -5,4 +5,5 @@ from . import views
 
 urlpatterns = [
     path('', views.render_login, name='login'),
+    path('<slug:username>/<slug:password>/', views.login)
 ]
