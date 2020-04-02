@@ -47,11 +47,15 @@
         function query_update() {
             confirm("Are you sure that you want to make these changes?");
 
-            base_url = window.location.href
+            restaurant_name = document.getElementById("restaurant-name").value.replace(/ /g, "-");
+            best_selling_item = document.getElementById("best-selling-item").value.replace(/ /g, "-");
+            best_selling_item_dsc = document.getElementById("best-selling-item-dsc").value.replace(/ /g, "-");
 
-            post_url = base_url + "update/-/-/-/"
+            base_url = window.location.href;
 
-            window.location.assign(post_url)
+            post_url = base_url + "update/" + restaurant_name + "/" + best_selling_item + "/" + best_selling_item_dsc + "/";
+
+            window.location.assign(post_url);
         }
 
         function query_delete() {
@@ -81,7 +85,7 @@
                         {{restaurant | safe}}
                     </th>
                     <td>
-                        <input type="text" value="{{restaurant_str | safe}}">
+                        <input type="text" value="{{restaurant_str | safe}}" id="restaurant-name">
                     </td>
                 </tr>
 
@@ -136,7 +140,7 @@
                         {{best_selling_item | safe}}
                     </th>
                     <td>
-                        <input type="text" value="{{best_selling_item_str | safe}}">
+                        <input type="text" value="{{best_selling_item_str | safe}}" id="best-selling-item">
                     </td>
                 </tr>
 
@@ -145,7 +149,7 @@
                         {{best_selling_item_dsc | safe}}
                     </th>
                     <td>
-                        <input type="text" value="{{best_selling_item_dsc_str | safe}}">
+                        <input type="text" value="{{best_selling_item_dsc_str | safe}}" id="best-selling-item-dsc">
                     </td>
                 </tr>
             </tbody>

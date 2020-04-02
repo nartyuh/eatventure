@@ -19,6 +19,7 @@ from django.urls import include, path
 urlpatterns = [
     path('', include('frontend.urls')),
     path('search/<slug:restaurant_name>/<slug:street_name>/<slug:postcode>/', include('frontend.urls')),
+    path('mapstats/', include('frontend.urls')),
     path('login/', include('restaurant_management.urls')),
     path('login/<slug:username>/<slug:password>/', include('restaurant_management.urls')),
     path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/', include('restaurant_management.urls')),

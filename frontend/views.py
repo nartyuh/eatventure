@@ -50,6 +50,20 @@ def search(requests, restaurant_name, street_name='', postcode=''):
                'postcode_id=' + "'" + postcode + "'" + ' or ' +
                'street_name=' + "'" + street_name.replace("'", "''") + "'"
     )
+
+    ### print query to console
+    print(
+        "\n--------------------------------------------------------------------\n" +
+        'select restaurant_name, longitude, latitude, aggregate_rating \n' +
+        'from restaurants_restaurant \n' +
+        'inner join restaurants_coordinates on restaurant_id=coordinates_id_id \n' +
+        'inner join locations_address on address_id_id=address_id \n' +
+        'inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id \n' +
+        'where restaurant_name=' + "'" + restaurant_name.replace("'", "''") + "'" + ' or ' +
+               'postcode_id=' + "'" + postcode + "'" + ' or ' +
+               'street_name=' + "'" + street_name.replace("'", "''") + "'"
+        + "\n--------------------------------------------------------------------\n"
+    )
     rows = cur.fetchall()
     for row in rows:
         restaurant_name = row[0]
@@ -59,14 +73,34 @@ def search(requests, restaurant_name, street_name='', postcode=''):
         folium.Marker([latitude, longitude], tooltip='More Info', popup='<strong>' + restaurant_name + ": " + str(aggregate_rating) + " stars" +
                       '</strong>', icon=folium.Icon(color="lightgray", icon="cutlery", prefix='fa')).add_to(map)
 
+    # get all entries in restaurants_restaurnant
     cur.execute(
         'select count(*)' + '\n' +
         'from restaurants_restaurant'
     )
-    total_entries = cur.fetchall()[0][0]
+
+    ### print query to console
+    print(
+        "\n--------------------------------------------------------------------\n" +
+        'select count(*)' + '\n' +
+        'from restaurants_restaurant'
+        + "\n--------------------------------------------------------------------\n"
+    )
 
     context = {'map': map.get_root().render(),
-               'results_count': str(len(rows)) + ' results found ' + 'in ' + str(total_entries) + ' entries'
+               'results_count': str(len(rows)) + ' results found ' + 'in ' + str(cur.fetchall()[0][0]) + ' entries'
               }
 
     return render(requests, 'map.html', context)
+
+
+def show_map_stats(requests):
+    
+    # get the total number of restaurants in Vancouver
+    cur.execute(
+        'select count(*)\n' +
+        'from restaurants_restaurant'
+    )
+    total_restaurants = cur.fetchall()[0][0]
+
+    return HttpResponse('This view is being developed')

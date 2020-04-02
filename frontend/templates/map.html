@@ -31,6 +31,11 @@
             var host_url = window.location.host;
             window.location.assign("http://" + host_url + "/login/");
         }
+
+        function show_map_stats() {
+            var host_url = window.location.host;
+            window.location.assign("http://" + host_url + "/mapstats/");
+        }
     </script>
 </head>
 
@@ -45,11 +50,13 @@
                 <input class="form-control mr-sm-2" type="text" placeholder="Street name" aria-label="Street name" id="street-name-search">
                 <input class="form-control mr-sm-2" type="text" placeholder="Postcode" aria-label="Postcode" id="postcode-search">
                 <button class="btn aqua-gradient btn-rounded btn-sm mr-sm-2 my-0" type="button" onclick="search();">Search</button>
+                <button class="btn aqua-gradient btn-rounded btn-sm mr-sm-2 my-0" type="button" onclick="show_map_stats();">Map Stats</button>
                 <p class="aqua-gradient my-0">{{ results_count | safe }}</p>
             </form>
 
         </div>
-        <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="button" onclick="managerLogin();">Manager Login</button>
+        <button class="btn aqua-gradient btn-rounded btn-sm mr-sm-2 my-0" type="button" onclick="managerLogin();">Manager Login</button>
     </nav>
     {{ map | safe }}
+
 </body>

@@ -1,5 +1,6 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from django.http import HttpRequest
+
 
 import psycopg2
 import os
@@ -11,7 +12,6 @@ conn = psycopg2.connect(
     os.environ['EATVENTURE_DATABASE_URL'], sslmode='require')
 # create cursor
 cur = conn.cursor()
-
 
 # Create your views here.
 
@@ -33,11 +33,14 @@ def login(requests, username, password):
         " and " + "password=" + "'" + password + "'"
     )
 
-    # print(
-    #     'select username ' + '\n' +
-    #     'from restaurant_management_manageraccount ' + '\n' +
-    #     'where username=' + "'" + username + "'" + " and " + "password=" + "'" + password + "'"
-    # )
+    ### print query to console
+    print(
+        "\n--------------------------------------------------------------------\n" +
+        'select username ' + '\n' +
+        'from restaurant_management_manageraccount ' + '\n' +
+        'where username=' + "'" + username + "'" + " and " + "password=" + "'" + password + "'"
+        + "\n--------------------------------------------------------------------\n"
+    )
 
     rows = cur.fetchall()
 
@@ -56,15 +59,18 @@ def login(requests, username, password):
             'inner join locations_postcode on postcode=postcode_id ' + '\n'
         )
 
-        # print(
-        #     'select restaurants_restaurant.restaurant_id, restaurant_name, concat(cast(longitude as varchar), \', \', cast(latitude as varchar)), concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode), aggregate_rating, review_count ' + "\n" +
-        #     'from (select restaurant_id from restaurant_management_matchmanagertorestaurant where manager_id=' + "'" + rows[0][0] + "') as manager_restaurants " + '\n' +
-        #     'inner join restaurants_restaurant on restaurants_restaurant.restaurant_id=manager_restaurants.restaurant_id ' + '\n' +
-        #     'inner join locations_address on address_id_id=address_id ' + '\n' +
-        #     'inner join locations_postcode on postcode=postcode_id ' + '\n' +
-        #     'inner join restaurants_coordinates on restaurants_restaurant.restaurant_id=restaurants_coordinates.coordinates_id_id ' + '\n' +
-        #     'inner join restaurants_ratingstats on restaurants_restaurant.restaurant_id=restaurants_ratingstats.rating_stats_id_id'
-        # )
+        ### print query to console
+        print(
+            "\n--------------------------------------------------------------------\n" +
+            'select restaurants_restaurant.restaurant_id, restaurant_name, concat(cast(longitude as varchar), \', \', cast(latitude as varchar)), concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode), aggregate_rating, review_count ' + "\n" +
+            'from (select restaurant_id from restaurant_management_matchmanagertorestaurant where manager_id=' + "'" + rows[0][0] + "') as manager_restaurants " + '\n' +
+            'inner join restaurants_restaurant on restaurants_restaurant.restaurant_id=manager_restaurants.restaurant_id ' + '\n' +
+            'inner join locations_address on address_id_id=address_id ' + '\n' +
+            'inner join locations_postcode on postcode=postcode_id ' + '\n' +
+            'inner join restaurants_coordinates on restaurants_restaurant.restaurant_id=restaurants_coordinates.coordinates_id_id ' + '\n' +
+            'inner join restaurants_ratingstats on restaurants_restaurant.restaurant_id=restaurants_ratingstats.rating_stats_id_id'
+            + "\n--------------------------------------------------------------------\n"
+        )
 
         rows = cur.fetchall()
 
@@ -121,23 +127,25 @@ def view_restaurant(requests, username, password, restaurant_id):
             'where restaurants_restaurant.restaurant_id=' + "'" + restaurant_id + "'"
         )
 
-        # print(
-        #     'select ' +
-        #     'restaurant_name, ' +
-        #     'concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode), ' + '\n' +
-        #     'concat(cast(longitude as varchar), \', \', cast(latitude as varchar)), ' + '\n' +
-        #     'price_range, aggregate_rating, review_count, item_name, item_description ' + '\n' +
-        #     'from restaurants_restaurant ' + '\n' +
-        #     'inner join locations_address on address_id_id=address_id ' + '\n' +
-        #     'inner join locations_postcode on postcode=postcode_id ' + '\n' +
-        #     'inner join restaurants_coordinates on restaurants_restaurant.restaurant_id=restaurants_coordinates.coordinates_id_id ' + '\n' +
-        #     'inner join restaurants_ratingstats on restaurants_restaurant.restaurant_id=restaurants_ratingstats.rating_stats_id_id' + '\n' +
-        #     'inner join restaurants_bestsellingitem on restaurants_restaurant.restaurant_id=restaurants_bestsellingitem.best_selling_item_id_id ' + '\n' +
-        #     'where restaurants_restaurant.restaurant_id=' + "'" + restaurant_id + "'"
-        # )
-
+        ### print query to console
+        print(
+            "\n--------------------------------------------------------------------\n" +
+            'select ' +
+            'restaurant_name, ' +
+            'concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode), ' + '\n' +
+            'concat(cast(longitude as varchar), \', \', cast(latitude as varchar)), ' + '\n' +
+            'price_range, aggregate_rating, review_count, item_name, item_description ' + '\n' +
+            'from restaurants_restaurant ' + '\n' +
+            'inner join locations_address on address_id_id=address_id ' + '\n' +
+            'inner join locations_postcode on postcode=postcode_id ' + '\n' +
+            'inner join restaurants_coordinates on restaurants_restaurant.restaurant_id=restaurants_coordinates.coordinates_id_id ' + '\n' +
+            'inner join restaurants_ratingstats on restaurants_restaurant.restaurant_id=restaurants_ratingstats.rating_stats_id_id' + '\n' +
+            'inner join restaurants_bestsellingitem on restaurants_restaurant.restaurant_id=restaurants_bestsellingitem.best_selling_item_id_id ' + '\n' +
+            'where restaurants_restaurant.restaurant_id=' + "'" + restaurant_id + "'"
+            + "\n--------------------------------------------------------------------\n"
+        )
+        # get output form query
         rows = cur.fetchall()
-
         restaurant_data = rows[0]
 
         context = {
@@ -186,20 +194,83 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
             " and " + "manager_id=" + "'" + username + "'"
         )
         
+        ### print query to console
         print(
+            "\n--------------------------------------------------------------------\n" +
             'select * ' + '\n' +
             'from restaurant_management_matchmanagertorestaurant ' + '\n' +
             'where restaurant_id=' + "'" + restaurant_id + "'" +
             " and " + "manager_id=" + "'" + username + "'"
+            + "\n--------------------------------------------------------------------\n"
         )
 
-        return HttpResponse(
-            'select * ' + '\n' +
-            'from restaurant_management_matchmanagertorestaurant ' + '\n' +
-            'where restaurant_id=' + "'" + restaurant_id + "'" +
-            " and " + "manager_id=" + "'" + username + "'"
-        )
+        rows = cur.fetchall()
+
+        if (len(rows) == 0):
+            return HttpResponse("There are no restaurants managed by this account.")
+        else:
+            restaurant_name = restaurant_name.replace("-", " ")
+            best_selling_item = best_selling_item.replace("-", " ")
+            best_selling_item_dsc = best_selling_item_dsc.replace("-", " ")
+            cur.execute(
+                'update restaurants_restaurant \n' +
+                'set restaurant_name=' + "'" + restaurant_name + "' \n" +
+                'where restaurant_id=' + "'" + restaurant_id + "'"
+            )
+
+            cur.execute(
+                'update restaurants_bestsellingitem \n' +
+                'set item_name=' + "'" + best_selling_item + "', item_description='" + best_selling_item_dsc + "' \n" +
+                'where best_selling_item_id_id=' + "'" + restaurant_id + "'" 
+            )
+
+            ### print query to console
+            print(
+                "\n--------------------------------------------------------------------\n" +
+                'update restaurants_restaurant \n' +
+                'set restaurant_name=' + "'" + restaurant_name + "' \n" +
+                'where restaurant_id=' + "'" + restaurant_id + "'"
+                + "\n--------------------------------------------------------------------\n" +
+                'update restaurants_bestsellingitem \n' +
+                'set item_name=' + "'" + best_selling_item + "', item_description='" + best_selling_item_dsc + "' \n" +
+                'where best_selling_item_id_id=' + "'" + restaurant_id + "'"
+                + "\n--------------------------------------------------------------------\n"
+            )
+
+            return redirect("/login/" + username + "/" + password + "/" + restaurant_id + "/" )
 
 
 def delete(requests, username, password, restaurant_id):
-    return HttpResponse("not yet implemented")
+
+    
+    cur.execute(
+        'select username ' + '\n' +
+        'from restaurant_management_manageraccount ' + '\n' +
+        'where username=' + "'" + username + "'" +
+        " and " + "password=" + "'" + password + "'"
+    )
+    rows = cur.fetchall()
+
+    # check if there is a matching account in database
+    if len(rows) == 0:
+        context = {
+            'message': '<html><p>There is no account associated with this username and password</p></html>',
+        }
+        return render(requests, 'failed_login.html', context)
+    else:
+        cur.execute(
+            'delete \n' +
+            'from restaurant_management_matchmanagertorestaurant \n' +
+            'where manager_id=' + "'" + username + "' and restaurant_id='" + restaurant_id + "'"  
+        )
+
+        # print query to console
+        print(
+            "\n--------------------------------------------------------------------\n" +
+            'delete \n' +
+            'from restaurant_management_matchmanagertorestaurant \n' +
+            'where manager_id=' + "'" + username + "' and restaurant_id='" + restaurant_id + "'"
+            + "\n--------------------------------------------------------------------\n"  
+        )
+
+        return redirect("/login/" + username + "/" + password + "/" )
