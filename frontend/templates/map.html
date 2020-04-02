@@ -9,7 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
         function search() {
-            var res_name_value = document.getElementById("restaurant-search").value.replace(/ /g, "-");
+            var res_name_value = document.getElementById("restaurant-name-search").value.replace(/ /g, "-");
             var res_name_value = res_name_value.replace(/'/g, "");
             if (res_name_value.length == 0) {
                 res_name_value = "-";
@@ -41,9 +41,9 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
             <form class="form-inline my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Restaurant name" id="restaurant-name-search">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Street name" id="street-name-search">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Postcode" id="postcode-search">
                 <button class="btn aqua-gradient btn-rounded btn-sm mr-sm-2 my-0" type="button" onclick="search();">Search</button>
                 <p class="aqua-gradient my-0">{{ results_count | safe }}</p>
             </form>
