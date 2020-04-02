@@ -21,5 +21,8 @@ urlpatterns = [
     path('search/<slug:restaurant_name>/<slug:street_name>/<slug:postcode>/', include('frontend.urls')),
     path('login/', include('restaurant_management.urls')),
     path('login/<slug:username>/<slug:password>/', include('restaurant_management.urls')),
+    path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/', include('restaurant_management.urls')),
+    path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/update/<slug:restaurant_name>/<slug:best_selling_item>/<slug:best_selling_item_dsc>/', include('restaurant_management.urls')),
+    path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/delete/', include('restaurant_management.urls')),
     path('admin/', admin.site.urls),
 ]

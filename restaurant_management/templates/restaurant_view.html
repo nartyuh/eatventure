@@ -1,0 +1,161 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+        tr {
+            text-align: center;
+        }
+        
+        div.restaurant-view {
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 80%;
+            height: 60%;
+            overflow: auto;
+        }
+        
+        div.submit-button {
+            position: absolute;
+            margin: auto;
+            top: 85%;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 80%;
+            overflow: auto;
+            text-align: center;
+        }
+        
+        th {
+            width: 50%;
+        }
+        
+        td {
+            width: 50%;
+        }
+    </style>
+
+    <script>
+        function query_update() {
+            confirm("Are you sure that you want to make these changes?");
+
+            base_url = window.location.href
+
+            post_url = base_url + "update/-/-/-/"
+
+            window.location.assign(post_url)
+        }
+
+        function query_delete() {
+            confirm("Are you sure that you want to dissociate from this restaurant?");
+
+            base_url = window.location.href
+
+            delete_url = base_url + "delete/"
+
+            window.location.assign(delete_url)
+        }
+    </script>
+</head>
+
+<body>
+    <div class="restaurant-view">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th colspan="2">Restaurant Info</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>
+                        {{restaurant | safe}}
+                    </th>
+                    <td>
+                        <input type="text" value="{{restaurant_str | safe}}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{address | safe}}
+                    </th>
+                    <td>
+                        <input type="text" value="{{address_str | safe}}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{coordinates | safe}}
+                    </th>
+                    <td>
+                        <input type="text" value="{{coordinates_str | safe}}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{price_range | safe}}
+                    </th>
+                    <td>
+                        <input type="text" value="{{price_range_str | safe}}">
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>
+                        {{rating | safe}}
+                    </th>
+                    <td>
+                        <input type="text" value="{{rating_str | safe}}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{review_count | safe}}
+                    </th>
+                    <td>
+                        <input type="text" value="{{review_count_str | safe}}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{best_selling_item | safe}}
+                    </th>
+                    <td>
+                        <input type="text" value="{{best_selling_item_str | safe}}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{best_selling_item_dsc | safe}}
+                    </th>
+                    <td>
+                        <input type="text" value="{{best_selling_item_dsc_str | safe}}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="submit-button">
+        <button onclick="query_update();">Submit changes</button>
+        <button onclick="query_delete();">Delete this restaurant</button>
+    </div>
+</body>
+
+</html>
