@@ -3,10 +3,10 @@
 
 <head>
     <title>Eatventure</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
         function search() {
             var res_name_value = document.getElementById("restaurant-search").value.replace(/ /g, "-");
@@ -26,18 +26,30 @@
             request_url = "http://" + host_url + "/search/" + res_name_value + "/" + street_name_value + "/" + postcode_value + "/";
             window.location.assign(request_url);
         }
+
+        function managerLogin() {
+            var host_url = window.location.host;
+            window.location.assign("http://" + host_url + "/login/");
+        }
     </script>
 </head>
 
 <body>
-    <div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light form-inline my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Restaurant name" aria-label="Search" id="restaurant-search">
-            <input class="form-control mr-sm-2" type="text" placeholder="Street name" aria-label="Search" id="street-name-search">
-            <input class="form-control mr-sm-2" type="text" placeholder="Postcode" aria-label="Search" id="postcode-search">
-            <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="button" onclick="search();">Search</button>
-            <p class="aqua-gradient my-0">{{ results_count | safe }}</p>
-        </nav>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 0;">
+
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <form class="form-inline my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn aqua-gradient btn-rounded btn-sm mr-sm-2 my-0" type="button" onclick="search();">Search</button>
+                <p class="aqua-gradient my-0">{{ results_count | safe }}</p>
+            </form>
+
+        </div>
+        <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="button" onclick="managerLogin();">Manager Login</button>
+    </nav>
     {{ map | safe }}
 </body>
