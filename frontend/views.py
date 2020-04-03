@@ -1,14 +1,12 @@
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
+from django.db import connection
 import folium
 import psycopg2
 import os
 
-# Establish connection to database
-conn = psycopg2.connect(
-    os.environ['EATVENTURE_DATABASE_URL'], sslmode='require')
-# create cursor
-cur = conn.cursor()
+# Establish cursor to database
+cur = connection.cursor()
 
 # Create your views here.
 

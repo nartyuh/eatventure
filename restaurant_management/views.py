@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.http import HttpRequest
+from django.db import connection
 
 
 import psycopg2
@@ -7,11 +8,14 @@ import os
 import pandas
 
 
-# Establish connection to database
-conn = psycopg2.connect(
-    os.environ['EATVENTURE_DATABASE_URL'], sslmode='require')
-# create cursor
-cur = conn.cursor()
+# # Establish connection to database
+# conn = psycopg2.connect(
+#     os.environ['EATVENTURE_DATABASE_URL'], sslmode='require')
+# # create cursor
+# cur = conn.cursor()
+
+# Establish cursor to database
+cur = connection.cursor()
 
 # Create your views here.
 
