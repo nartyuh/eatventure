@@ -26,7 +26,7 @@ def map(requests):
 
     # get restaurants who have donated to all food banks in vancouver that is on the record
     cur.execute(
-        'select restaurant_name, longitude, latitude, aggregate_rating\n' +
+        'select restaurant_name, longitude, latitude, aggregate_rating, image_url\n' +
         'from restaurants_restaurant\n' +
         'inner join (\n'
         'select distinct donation.restaurant_id_id from restaurants_foodbankdonation as donation\n' +
@@ -36,7 +36,8 @@ def map(requests):
         '(select _donation.food_bank from restaurants_foodbankdonation as _donation where donation.restaurant_id_id=_donation.restaurant_id_id)))\n' +
         'as div_results on div_results.restaurant_id_id=restaurants_restaurant.restaurant_id\n' +
         'inner join restaurants_coordinates on restaurants_restaurant.restaurant_id=coordinates_id_id \n' +
-        'inner join restaurants_ratingstats on restaurants_restaurant.restaurant_id=rating_stats_id_id'
+        'inner join restaurants_ratingstats on restaurants_restaurant.restaurant_id=rating_stats_id_id\n' +
+        'inner join restaurants_imageurl on restaurants_restaurant.restaurant_id=restaurants_imageurl.restaurant_id_id'
     )
     ### print query to console
     print(
@@ -56,14 +57,14 @@ def map(requests):
     )
     rows = cur.fetchall()
 
-    popup_html = '<div class="card" style="width: 18rem;"><img src="https://s3-media3.fl.yelpcdn.com/bphoto/Bj5s4n2_52dDkPzXZQBKzA/o.jpg" class="card-img-top" alt=""><div class="card-body"><h5 class="card-title">Card title</h5><p class="card-text">TESTING</p><a href="#" class="btn btn-primary">Go somewhere</a></div></div>'
-
     for row in rows:
         restaurant_name = row[0]
-        print(restaurant_name)
         longitude = row[1]
         latitude = row[2]
         aggregate_rating = row[3]
+        image_url = row[4]
+        popup_html = '<div class="card" style="width: 18rem;"><img src="' + image_url + '" class="card-img-top" alt=""><div class="card-body"><strong class="card-title">' + restaurant_name + ': ' + str(aggregate_rating) + ' stars' + '</strong><p class="card-text">TESTING</p></div>'
+
         folium.Marker([latitude, longitude], tooltip='More Info', popup=popup_html, icon=folium.Icon(color="lightgray", icon="cutlery", prefix='fa')).add_to(map)
 
     context = {'map': map.get_root().render()}
@@ -81,11 +82,12 @@ def search(requests, restaurant_name, street_name='', postcode=''):
     street_name = street_name.replace('-', ' ')
 
     cur.execute(
-        'select restaurant_name, longitude, latitude, aggregate_rating ' +
+        'select restaurant_name, longitude, latitude, aggregate_rating, image_url\n' +
         'from restaurants_restaurant ' +
         'inner join restaurants_coordinates on restaurant_id=coordinates_id_id ' +
         'inner join locations_address on address_id_id=address_id ' +
         'inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id ' +
+        'inner join restaurants_imageurl on restaurants_restaurant.restaurant_id=restaurants_imageurl.restaurant_id_id\n' +
         'where restaurant_name=' + "'" + restaurant_name.replace("'", "''") + "'" + ' or ' +
                'postcode_id=' + "'" + postcode + "'" + ' or ' +
                'street_name=' + "'" + street_name.replace("'", "''") + "'"
@@ -110,8 +112,10 @@ def search(requests, restaurant_name, street_name='', postcode=''):
         longitude = row[1]
         latitude = row[2]
         aggregate_rating = row[3]
-        folium.Marker([latitude, longitude], tooltip='More Info', popup='<strong>' + restaurant_name + ": " + str(aggregate_rating) + " stars" +
-                      '</strong>', icon=folium.Icon(color="lightgray", icon="cutlery", prefix='fa')).add_to(map)
+        image_url = row[4]
+        popup_html = '<div class="card" style="width: 18rem;"><img src="' + image_url + '" class="card-img-top" alt=""><div class="card-body"><strong class="card-title">' + restaurant_name + ': ' + str(aggregate_rating) + ' stars' + '</strong><p class="card-text">TESTING</p></div>'
+
+        folium.Marker([latitude, longitude], tooltip='More Info', popup=popup_html, icon=folium.Icon(color="lightgray", icon="cutlery", prefix='fa')).add_to(map)
 
     context = {'map': map.get_root().render(),
                'results_count': str(len(rows)) + ' results found '
