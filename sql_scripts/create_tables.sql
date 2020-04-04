@@ -122,19 +122,20 @@ ALTER TABLE "restaurants_promotion" ADD CONSTRAINT "restaurants_promotion_restau
 CREATE INDEX "restaurants_promotion_promotion_code_idx" ON "restaurants_promotion" ("promotion_code" varchar_pattern_ops);
 CREATE INDEX "restaurants_promotion_restaurant_id_id_idx" ON "restaurants_promotion" ("restaurant_id_id" varchar_pattern_ops);
 --
--- Create model FoodBankDonation
---
-CREATE TABLE "restaurants_foodbankdonation" ("food_bank" varchar(100) NOT NULL, "restaurant_id_id" varchar(50) NOT NULL);
-ALTER TABLE "restaurants_foodbankdonation" ADD CONSTRAINT "restaurants_foodbankdonation_unique" UNIQUE ("food_bank", "restaurant_id_id");
-ALTER TABLE "restaurants_foodbankdonation" ADD CONSTRAINT "restaurants_foodbankdonation_restaurant_id_id_fk_restaurant" FOREIGN KEY ("restaurant_id_id") REFERENCES "restaurants_restaurant" ("restaurant_id");
-CREATE INDEX "restaurants_foodbankdonation_food_bank_idx" ON "restaurants_foodbankdonation" ("food_bank" varchar_pattern_ops);
-CREATE INDEX "restaurants_foodbankdonation_restaurant_id_id_idx" ON "restaurants_foodbankdonation" ("restaurant_id_id" varchar_pattern_ops);
---
 -- Create model FoodBank
 --
 CREATE TABLE "charities_foodbank" ("food_bank" varchar(100) PRIMARY KEY);
 CREATE INDEX "charities_foodbank_food_bank_idx" ON "charities_foodbank" ("food_bank" varchar_pattern_ops);
 --
+--
+-- Create model FoodBankDonation
+--
+CREATE TABLE "restaurants_foodbankdonation" ("food_bank" varchar(100) NOT NULL, "restaurant_id_id" varchar(50) NOT NULL);
+ALTER TABLE "restaurants_foodbankdonation" ADD CONSTRAINT "restaurants_foodbankdonation_pk" PRIMARY KEY ("food_bank", "restaurant_id_id");
+ALTER TABLE "restaurants_foodbankdonation" ADD CONSTRAINT "restaurants_foodbankdonation_restaurant_id_id_fk_restaurant" FOREIGN KEY ("restaurant_id_id") REFERENCES "restaurants_restaurant" ("restaurant_id");
+ALTER TABLE "restaurants_foodbankdonation" ADD CONSTRAINT "restaurants_foodbankdonation_food_bank_fk_foodbank" FOREIGN KEY ("food_bank") REFERENCES "charities_foodbank" ("food_bank");
+CREATE INDEX "restaurants_foodbankdonation_food_bank_idx" ON "restaurants_foodbankdonation" ("food_bank" varchar_pattern_ops);
+CREATE INDEX "restaurants_foodbankdonation_restaurant_id_id_idx" ON "restaurants_foodbankdonation" ("restaurant_id_id" varchar_pattern_ops);
 -- Create model ImageURL
 --
 CREATE TABLE "restaurants_imageurl" ("restaurant_id_id" varchar(50) PRIMARY KEY, "image_url" varchar(500) NOT NULL);

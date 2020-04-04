@@ -199,9 +199,12 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
         if (len(rows) == 0):
             return HttpResponse("There are no restaurants managed by this account.")
         else:
+            # format string
             restaurant_name = restaurant_name.replace("-", " ")
             best_selling_item = best_selling_item.replace("-", " ")
             best_selling_item_dsc = best_selling_item_dsc.replace("-", " ")
+            food_bank = food_bank.replace("-", " ")
+
             cur.execute(
                 'update restaurants_restaurant \n' +
                 'set restaurant_name=' + "'" + restaurant_name + "' \n" +
