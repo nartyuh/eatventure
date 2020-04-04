@@ -4,9 +4,6 @@ from django.db import connection
 
 import pandas
 
-# Establish cursor to database
-cur = connection.cursor()
-
 # Create your views here.
 
 def index(requests):
@@ -18,6 +15,9 @@ def render_login(requests):
 
 
 def login(requests, username, password):
+
+    # Establish cursor to database
+    cur = connection.cursor()
 
     # check database if this is a registered account
     cur.execute(
@@ -87,6 +87,9 @@ def login(requests, username, password):
 
 
 def view_restaurant(requests, username, password, restaurant_id):
+
+    # Establish cursor to database
+    cur = connection.cursor()
 
     # check database if this is a registered account
     cur.execute(
@@ -163,6 +166,9 @@ def view_restaurant(requests, username, password, restaurant_id):
 
 
 def update(requests, username, password, restaurant_id, restaurant_name, best_selling_item, best_selling_item_dsc, food_bank):
+
+    # Establish cursor to database
+    cur = connection.cursor()
 
     # check database if this is a registered account
     cur.execute(
@@ -245,6 +251,8 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
 
 def delete(requests, username, password, restaurant_id):
 
+    # Establish cursor to database
+    cur = connection.cursor()
     
     cur.execute(
         'select username ' + '\n' +

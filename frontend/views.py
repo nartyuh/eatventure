@@ -22,6 +22,9 @@ def create_map():
 
 def map(requests):
 
+    # Establish cursor to database
+    cur = connection.cursor()
+
     map = create_map()
 
     # get restaurants who have donated to all food banks in vancouver that is on the record
@@ -85,6 +88,9 @@ def map(requests):
 
 def search(requests, restaurant_name, street_name='', postcode=''):
 
+    # Establish cursor to database
+    cur = connection.cursor()
+
     map = create_map()
 
     # reformat string args
@@ -144,6 +150,9 @@ def search(requests, restaurant_name, street_name='', postcode=''):
 
 def show_map_stats(requests):
     
+    # Establish cursor to database
+    cur = connection.cursor()
+
     # get the total number of restaurants in Vancouver
     cur.execute(
         'select count(*)\n' +
@@ -217,39 +226,6 @@ def show_map_stats(requests):
     )
     stats_by_ratings = cur.fetchall()
     rdf = pandas.DataFrame(stats_by_ratings, columns=('Rating', 'Number of Restaurants'))
-
-    # # get restaurants who have donated to all food banks in vancouver that is on the record
-    # cur.execute(
-    #     'select restaurant_name, concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode)\n' +
-    #     'from restaurants_restaurant\n' +
-    #     'inner join (\n'
-    #     'select distinct donation.restaurant_id_id from restaurants_foodbankdonation as donation\n' +
-    #     'where not exists (\n' +
-    #     '(select foodbank.food_bank from charities_foodbank as foodbank)\n' +
-    #     'except\n' +
-    #     '(select _donation.food_bank from restaurants_foodbankdonation as _donation where donation.restaurant_id_id=_donation.restaurant_id_id)))\n' +
-    #     'as div_results on div_results.restaurant_id_id=restaurants_restaurant.restaurant_id\n' +
-    #     'inner join locations_address on address_id_id=address_id ' + '\n' +
-    #     'inner join locations_postcode on postcode=postcode_id'
-    # )
-    # ### print query to console
-    # print(
-    #     "\n--------------------------------------------------------------------\n" +
-    #     'select restaurant_name, concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode)\n' +
-    #     'from restaurants_restaurant\n' +
-    #     'inner join (\n'
-    #     'select distinct donation.restaurant_id_id from restaurants_foodbankdonation as donation\n' +
-    #     'where not exists (\n' +
-    #     '(select foodbank.food_bank from charities_foodbank as foodbank)\n' +
-    #     'except\n' +
-    #     '(select _donation.food_bank from restaurants_foodbankdonation as _donation where donation.restaurant_id_id=_donation.restaurant_id_id)))\n' +
-    #     'as div_results on div_results.restaurant_id_id=restaurants_restaurant.restaurant_id\n' +
-    #     'inner join locations_address on address_id_id=address_id ' + '\n' +
-    #     'inner join locations_postcode on postcode=postcode_id'
-    #     + "\n--------------------------------------------------------------------\n"
-    # )
-    # honourable_restaurants = cur.fetchall()
-    # hdf = pandas.DataFrame(honourable_restaurants, columns=('Restaurant Honored for Charitable Initiatives', 'Address'))
     
     context = {
         'stats_by_postcode': pcdf.to_html(classes=['table'], index=False, justify='center'),
