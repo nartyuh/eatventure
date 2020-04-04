@@ -52,7 +52,6 @@ def login(requests, username, password):
             'inner join locations_address on address_id_id=address_id ' + '\n' +
             'inner join locations_postcode on postcode=postcode_id ' + '\n'
         )
-
         ### print query to console
         print(
             "\n--------------------------------------------------------------------\n" +
@@ -65,7 +64,6 @@ def login(requests, username, password):
             'inner join restaurants_ratingstats on restaurants_restaurant.restaurant_id=restaurants_ratingstats.rating_stats_id_id'
             + "\n--------------------------------------------------------------------\n"
         )
-
         rows = cur.fetchall()
 
         df = pandas.DataFrame(rows, columns=(
@@ -120,7 +118,6 @@ def view_restaurant(requests, username, password, restaurant_id):
             'inner join restaurants_bestsellingitem on restaurants_restaurant.restaurant_id=restaurants_bestsellingitem.best_selling_item_id_id ' + '\n' +
             'where restaurants_restaurant.restaurant_id=' + "'" + restaurant_id + "'"
         )
-
         ### print query to console
         print(
             "\n--------------------------------------------------------------------\n" +
@@ -138,7 +135,7 @@ def view_restaurant(requests, username, password, restaurant_id):
             'where restaurants_restaurant.restaurant_id=' + "'" + restaurant_id + "'"
             + "\n--------------------------------------------------------------------\n"
         )
-        # get output form query
+        # get output from query
         rows = cur.fetchall()
         restaurant_data = rows[0]
 
@@ -158,13 +155,14 @@ def view_restaurant(requests, username, password, restaurant_id):
             'best_selling_item': 'Best Selling Item',
             'best_selling_item_str': restaurant_data[6],
             'best_selling_item_dsc': 'Best Selling Item Description',
-            'best_selling_item_dsc_str': restaurant_data[7]
+            'best_selling_item_dsc_str': restaurant_data[7],
+            'food_bank': 'Support a food bank'
         }
 
         return render(requests, 'restaurant_view.html', context)
 
 
-def update(requests, username, password, restaurant_id, restaurant_name, best_selling_item, best_selling_item_dsc):
+def update(requests, username, password, restaurant_id, restaurant_name, best_selling_item, best_selling_item_dsc, food_bank):
 
     # check database if this is a registered account
     cur.execute(
@@ -187,7 +185,6 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
             'where restaurant_id=' + "'" + restaurant_id + "'" +
             " and " + "manager_id=" + "'" + username + "'"
         )
-        
         ### print query to console
         print(
             "\n--------------------------------------------------------------------\n" +
@@ -197,7 +194,6 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
             " and " + "manager_id=" + "'" + username + "'"
             + "\n--------------------------------------------------------------------\n"
         )
-
         rows = cur.fetchall()
 
         if (len(rows) == 0):
@@ -211,13 +207,11 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
                 'set restaurant_name=' + "'" + restaurant_name + "' \n" +
                 'where restaurant_id=' + "'" + restaurant_id + "'"
             )
-
             cur.execute(
                 'update restaurants_bestsellingitem \n' +
                 'set item_name=' + "'" + best_selling_item + "', item_description='" + best_selling_item_dsc + "' \n" +
                 'where best_selling_item_id_id=' + "'" + restaurant_id + "'" 
             )
-
             ### print query to console
             print(
                 "\n--------------------------------------------------------------------\n" +
@@ -230,6 +224,18 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
                 'where best_selling_item_id_id=' + "'" + restaurant_id + "'"
                 + "\n--------------------------------------------------------------------\n"
             )
+
+            # insert a record to restaurants_foodbankdonation if the restaurant decides to donate to a food bank
+            if len(food_bank.strip()) != 0:
+                cur.execute(
+                    'insert into restaurants_foodbankdonation\n' +
+                    "values ('" + food_bank.strip() + "', " + "'" + restaurant_id +"')"
+                )
+                ### print query to console
+                print(
+                    'insert into restaurants_foodbankdonation\n' +
+                    "values ('" + food_bank.strip() + "', " + "'" + restaurant_id +"')"
+                )
 
             return redirect("/login/" + username + "/" + password + "/" + restaurant_id + "/" )
 

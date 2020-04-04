@@ -23,7 +23,7 @@ urlpatterns = [
     path('login/', include('restaurant_management.urls')),
     path('login/<slug:username>/<slug:password>/', include('restaurant_management.urls')),
     path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/', include('restaurant_management.urls')),
-    path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/update/<slug:restaurant_name>/<slug:best_selling_item>/<slug:best_selling_item_dsc>/', include('restaurant_management.urls')),
+    path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/update/<slug:restaurant_name>/<slug:best_selling_item>/<slug:best_selling_item_dsc>/<slug:food_bank>/', include('restaurant_management.urls')),
     path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/delete/', include('restaurant_management.urls')),
     path('admin/', admin.site.urls),
 ]

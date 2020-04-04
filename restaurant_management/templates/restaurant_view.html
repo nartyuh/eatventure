@@ -50,10 +50,13 @@
             restaurant_name = document.getElementById("restaurant-name").value.replace(/ /g, "-");
             best_selling_item = document.getElementById("best-selling-item").value.replace(/ /g, "-");
             best_selling_item_dsc = document.getElementById("best-selling-item-dsc").value.replace(/ /g, "-");
+            food_bank = document.getElementById("food-bank").value.replace(/ /g, "-");
+            if (food_bank.length == 0)
+                food_bank = "-"
 
             base_url = window.location.href;
 
-            post_url = base_url + "update/" + restaurant_name + "/" + best_selling_item + "/" + best_selling_item_dsc + "/";
+            post_url = base_url + "update/" + restaurant_name + "/" + best_selling_item + "/" + best_selling_item_dsc + "/" + food_bank + "/";
 
             window.location.assign(post_url);
         }
@@ -150,6 +153,15 @@
                     </th>
                     <td>
                         <input type="text" value="{{best_selling_item_dsc_str | safe}}" id="best-selling-item-dsc">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{food_bank | safe}}
+                    </th>
+                    <td>
+                        <input type="text" value="" id="food-bank">
                     </td>
                 </tr>
             </tbody>
