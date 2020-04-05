@@ -252,7 +252,7 @@ def update_restaurant(requests, username, password, restaurant_id, restaurant_na
                     + "\n--------------------------------------------------------------------\n"
                 )
 
-            return redirect("/login/" + username + "/" + password + "/" + restaurant_id + "/" )
+            return redirect("/login/" + username + "/" + password + "/" )
 
 
 def delete_restaurant(requests, username, password, restaurant_id):
