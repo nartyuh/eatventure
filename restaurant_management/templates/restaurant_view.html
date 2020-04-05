@@ -57,7 +57,7 @@
 
             base_url = window.location.href;
 
-            post_url = base_url + "update/" + restaurant_name + "/" + best_selling_item + "/" + best_selling_item_dsc + "/" + food_bank + "/";
+            post_url = base_url + "updaterestaurant/" + restaurant_name + "/" + best_selling_item + "/" + best_selling_item_dsc + "/" + food_bank + "/";
 
             window.location.assign(post_url);
         }
@@ -65,11 +65,11 @@
         function query_delete() {
             confirm("Are you sure that you want to dissociate from this restaurant?");
 
-            base_url = window.location.href
+            base_url = window.location.href;
 
-            delete_url = base_url + "delete/"
+            delete_url = base_url + "deleterestaurant/";
 
-            window.location.assign(delete_url)
+            window.location.assign(delete_url);
         }
     </script>
 </head>

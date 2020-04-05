@@ -86,7 +86,7 @@ ALTER TABLE "locations_address" ALTER COLUMN "street_num" TYPE varchar(100);
 SET CONSTRAINTS "locations_address_postcode_id_4b30f849_fk_locations" IMMEDIATE; ALTER TABLE "locations_address" DROP CONSTRAINT "locations_address_postcode_id_4b30f849_fk_locations";
 ALTER TABLE "locations_postcode" ALTER COLUMN "postcode" TYPE varchar(100);
 ALTER TABLE "locations_address" ALTER COLUMN "postcode_id" TYPE varchar(100) USING "postcode_id"::varchar(100);
-ALTER TABLE "locations_address" ADD CONSTRAINT "locations_address_postcode_id_4b30f849_fk" FOREIGN KEY ("postcode_id") REFERENCES "locations_postcode" ("postcode") ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE "locations_address" ADD CONSTRAINT "locations_address_postcode_id_4b30f849_fk_locations" FOREIGN KEY ("postcode_id") REFERENCES "locations_postcode" ("postcode") ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 --
 -- Alter field item_name on bestsellingitem
 --

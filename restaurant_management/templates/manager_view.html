@@ -16,27 +16,47 @@
             background-color: rgb(56, 56, 56);
         }
         
-        div {
+        div.manager-view {
             position: absolute;
             margin: auto;
             top: 0;
             right: 0;
             bottom: 0;
             left: 0;
-            width: 100%;
-            height: 60%;
-        }
-        
-        div.manager-view {
             width: 80%;
+            height: 60%;
             overflow: auto;
         }
+        
+        div.submit-button {
+            position: absolute;
+            margin: auto;
+            top: 85%;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 80%;
+            overflow: auto;
+            text-align: center;
+        }
     </style>
+
+    <script>
+        function query_delete() {
+            confirm("Are you sure you want to delete this account?");
+            base_url = window.location.href;
+            delete_url = base_url + "deleteaccount/";
+            window.location.assign(delete_url);
+        }
+    </script>
 </head>
 
 <body>
     <div class="manager-view">
         {{ manager_view | safe }}
+    </div>
+    <div class="submit-button">
+        <button onclick="query_delete();">Delete this account</button>
     </div>
 </body>
 

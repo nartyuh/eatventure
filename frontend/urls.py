@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path('', views.map),
-    re_path(r'^search/(?P<restaurant_name>[\w|\W]+)/(?P<street_name>[\w|\W]+)/(?P<postcode>[\w|\W]+)/$', views.search),
+    re_path(r'^search/(?P<restaurant_name>[^/]+)/(?P<street_name>[^/]+)/(?P<postcode>[^/]+)/$', views.search),
     path('mapstats/', views.show_map_stats),
 ]

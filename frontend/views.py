@@ -4,13 +4,15 @@ from django.db import connection
 
 import folium
 import pandas
+import io
+import base64
 
 # Establish cursor to database
 cur = connection.cursor()
 
 # Create your views here.
 
-
+### HELPER FUNCTIONS
 def create_map():
     # create map object
     map = folium.Map(location=[49.246292, -123.116226],
@@ -19,7 +21,17 @@ def create_map():
 
     return map
 
+def fig_to_base64(fig):
+        img = io.BytesIO()
+        fig.savefig(img, format='png',
+                bbox_inches='tight')
+        img.seek(0)
 
+        return base64.b64encode(img.getvalue())
+
+
+
+### MAIN REQUESTS FUNCTIONS
 def map(requests):
 
     # Establish cursor to database
@@ -228,6 +240,10 @@ def show_map_stats(requests):
         'stats_by_postcode': pcdf.to_html(classes=['table'], index=False, justify='center'),
         'stats_by_price_range': prdf.to_html(classes=['table'], index=False, justify='center'),
         'stats_by_rating': rdf.to_html(classes=['table'], index=False, justify='center'),
+        # 'stats_by_postcode': '<img src="data:image/png;base64, {}">'.format(fig_to_base64(pcdf).decode('utf-8'))
     }
 
     return render(requests, 'mapstats.html', context)
+
+
+    

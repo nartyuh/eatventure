@@ -87,6 +87,10 @@ def login(requests, username, password):
 
 def view_restaurant(requests, username, password, restaurant_id):
 
+    print(username)
+    print(password)
+    print(restaurant_id)
+
     # Establish cursor to database
     cur = connection.cursor()
 
@@ -164,7 +168,7 @@ def view_restaurant(requests, username, password, restaurant_id):
         return render(requests, 'restaurant_view.html', context)
 
 
-def update(requests, username, password, restaurant_id, restaurant_name, best_selling_item, best_selling_item_dsc, food_bank):
+def update_restaurant(requests, username, password, restaurant_id, restaurant_name, best_selling_item, best_selling_item_dsc, food_bank):
 
     # Establish cursor to database
     cur = connection.cursor()
@@ -205,6 +209,7 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
             return HttpResponse("There are no restaurants managed by this account.")
         else:
             # format string
+            restaurant_name = restaurant_name.strip().replace("'", "''")
             best_selling_item = best_selling_item.strip().replace("'", "''")
             best_selling_item_dsc = best_selling_item_dsc.strip().replace("'", "''")
             food_bank = food_bank.strip().replace("'", "''")
@@ -250,7 +255,7 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
             return redirect("/login/" + username + "/" + password + "/" + restaurant_id + "/" )
 
 
-def delete(requests, username, password, restaurant_id):
+def delete_restaurant(requests, username, password, restaurant_id):
 
     # Establish cursor to database
     cur = connection.cursor()
@@ -275,7 +280,6 @@ def delete(requests, username, password, restaurant_id):
             'from restaurant_management_matchmanagertorestaurant \n' +
             'where manager_id=' + "'" + username + "' and restaurant_id='" + restaurant_id + "'"  
         )
-
         # print query to console
         print(
             "\n--------------------------------------------------------------------\n" +
@@ -286,3 +290,40 @@ def delete(requests, username, password, restaurant_id):
         )
 
         return redirect("/login/" + username + "/" + password + "/" )
+
+
+def delete_account(requests, username, password):
+
+    # Establish cursor to database
+    cur = connection.cursor()
+    
+    cur.execute(
+        'select username ' + '\n' +
+        'from restaurant_management_manageraccount ' + '\n' +
+        'where username=' + "'" + username + "'" +
+        " and " + "password=" + "'" + password + "'"
+    )
+    rows = cur.fetchall()
+
+    # check if there is a matching account in database
+    if len(rows) == 0:
+        context = {
+            'message': '<html><p>There is no account associated with this username and password</p></html>',
+        }
+        return render(requests, 'failed_login.html', context)
+    else:
+        cur.execute(
+            'delete\n' +
+            'from restaurant_management_manageraccount\n' +
+            "where username='" + username + "' and password='" + password + "'" 
+        )
+        ### print query to the console
+        print(
+            "\n--------------------------------------------------------------------\n" +
+            'delete\n' +
+            'from restaurant_management_manageraccount\n' +
+            "where username='" + username + "' and password='" + password + "'"
+            + "\n--------------------------------------------------------------------\n"
+        )
+
+        return redirect("/login/")
