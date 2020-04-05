@@ -86,7 +86,7 @@ def map(requests):
     return render(requests, 'map.html', context)
 
 
-def search(requests, restaurant_name, street_name='', postcode=''):
+def search(requests, restaurant_name='', street_name='', postcode=''):
 
     # Establish cursor to database
     cur = connection.cursor()
@@ -94,9 +94,10 @@ def search(requests, restaurant_name, street_name='', postcode=''):
     map = create_map()
 
     # reformat string args
-    restaurant_name = restaurant_name.replace('-', ' ')
-    postcode = postcode.replace('-', ' ')
-    street_name = street_name.replace('-', ' ')
+    restaurant_name = restaurant_name.replace('-', ' ').strip().upper()
+    postcode = postcode.replace('-', ' ').strip().upper()
+    street_name = street_name.replace('-', ' ').strip().upper()
+
 
     cur.execute(
         'select restaurant_name, longitude, latitude, aggregate_rating, image_url, concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode)\n' +
@@ -106,11 +107,10 @@ def search(requests, restaurant_name, street_name='', postcode=''):
         'inner join locations_postcode on postcode_id=postcode\n' +
         'inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id\n' +
         'inner join restaurants_imageurl on restaurants_restaurant.restaurant_id=restaurants_imageurl.restaurant_id_id\n' +
-        'where restaurant_name=' + "'" + restaurant_name.replace("'", "''") + "'" + ' or ' +
-               'postcode_id=' + "'" + postcode + "'" + ' or ' +
-               'street_name=' + "'" + street_name.replace("'", "''") + "'"
+        'where upper(restaurant_name)=' + "'" + restaurant_name.replace("'", "''") + "'" + ' or ' +
+               'upper(postcode_id)=' + "'" + postcode + "'" + ' or ' +
+               'upper(street_name)=' + "'" + street_name.replace("'", "''") + "'"
     )
-
     ### print query to console
     print(
         "\n--------------------------------------------------------------------\n" +
@@ -121,9 +121,9 @@ def search(requests, restaurant_name, street_name='', postcode=''):
         'inner join locations_postcode on postcode_id=postcode\n' +
         'inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id\n' +
         'inner join restaurants_imageurl on restaurants_restaurant.restaurant_id=restaurants_imageurl.restaurant_id_id\n' +
-        'where restaurant_name=' + "'" + restaurant_name.replace("'", "''") + "'" + ' or ' +
-               'postcode_id=' + "'" + postcode + "'" + ' or ' +
-               'street_name=' + "'" + street_name.replace("'", "''") + "'"
+        'where upper(restaurant_name)=' + "'" + restaurant_name.replace("'", "''") + "'" + ' or ' +
+               'upper(postcode_id)=' + "'" + postcode + "'" + ' or ' +
+               'upper(street_name)=' + "'" + street_name.replace("'", "''") + "'"
         + "\n--------------------------------------------------------------------\n"
     )
     rows = cur.fetchall()
@@ -141,8 +141,20 @@ def search(requests, restaurant_name, street_name='', postcode=''):
 
         folium.Marker([latitude, longitude], tooltip='More Info', popup=popup_html, icon=folium.Icon(color="lightgray", icon="cutlery", prefix='fa')).add_to(map)
 
+    # get total number of restaurant entries
+    cur.execute(
+        'select count(*) from restaurants_restaurant'
+    )
+    ### print query to console
+    print(
+        "\n--------------------------------------------------------------------\n" +
+        'select count(*) from restaurants_restaurant'
+        + "\n--------------------------------------------------------------------\n"
+    )
+    total_restaurants = cur.fetchall()[0][0]
+
     context = {'map': map.get_root().render(),
-               'results_count': str(len(rows)) + ' results found '
+               'results_count': str(len(rows)) + ' results found in ' + str(total_restaurants) + ' entries'
               }
 
     return render(requests, 'map.html', context)
@@ -152,20 +164,6 @@ def show_map_stats(requests):
     
     # Establish cursor to database
     cur = connection.cursor()
-
-    # get the total number of restaurants in Vancouver
-    cur.execute(
-        'select count(*)\n' +
-        'from restaurants_restaurant'
-    )
-    ### print the query to console
-    print(
-        "\n--------------------------------------------------------------------\n" +
-        'select count(*)\n' +
-        'from restaurants_restaurant'
-        + "\n--------------------------------------------------------------------\n"
-    )
-    total_restaurants = cur.fetchall()[0][0]
 
     # get restaurants count based on postcode
     cur.execute(
@@ -231,7 +229,6 @@ def show_map_stats(requests):
         'stats_by_postcode': pcdf.to_html(classes=['table'], index=False, justify='center'),
         'stats_by_price_range': prdf.to_html(classes=['table'], index=False, justify='center'),
         'stats_by_rating': rdf.to_html(classes=['table'], index=False, justify='center'),
-        # 'honourable_restaurants': hdf.to_html(classes=['table table-dark'], index=False, justify='center'),
     }
 
     return render(requests, 'mapstats.html', context)

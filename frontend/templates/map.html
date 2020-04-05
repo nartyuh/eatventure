@@ -10,7 +10,6 @@
     <script>
         function search() {
             var res_name_value = document.getElementById("restaurant-name-search").value.replace(/ /g, "-");
-            var res_name_value = res_name_value.replace(/'/g, "");
             if (res_name_value.length == 0) {
                 res_name_value = "-";
             }

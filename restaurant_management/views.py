@@ -32,7 +32,8 @@ def login(requests, username, password):
         "\n--------------------------------------------------------------------\n" +
         'select username ' + '\n' +
         'from restaurant_management_manageraccount ' + '\n' +
-        'where username=' + "'" + username + "'" + " and " + "password=" + "'" + password + "'"
+        'where username=' + "'" + username + "'" +
+        " and " + "password=" + "'" + password + "'"
         + "\n--------------------------------------------------------------------\n"
     )
 
@@ -50,18 +51,16 @@ def login(requests, username, password):
             'from (select restaurant_id, manager_id from restaurant_management_matchmanagertorestaurant where manager_id=' + "'" + rows[0][0] + "') as manager_restaurants " + '\n' +
             'inner join restaurants_restaurant on restaurants_restaurant.restaurant_id=manager_restaurants.restaurant_id ' + '\n' +
             'inner join locations_address on address_id_id=address_id ' + '\n' +
-            'inner join locations_postcode on postcode=postcode_id ' + '\n'
+            'inner join locations_postcode on postcode=postcode_id '
         )
         ### print query to console
         print(
             "\n--------------------------------------------------------------------\n" +
-            'select restaurants_restaurant.restaurant_id, restaurant_name, concat(cast(longitude as varchar), \', \', cast(latitude as varchar)), concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode), aggregate_rating, review_count ' + "\n" +
-            'from (select restaurant_id from restaurant_management_matchmanagertorestaurant where manager_id=' + "'" + rows[0][0] + "') as manager_restaurants " + '\n' +
+            'select restaurants_restaurant.restaurant_id, restaurant_name, concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode), manager_id ' + "\n" +
+            'from (select restaurant_id, manager_id from restaurant_management_matchmanagertorestaurant where manager_id=' + "'" + rows[0][0] + "') as manager_restaurants " + '\n' +
             'inner join restaurants_restaurant on restaurants_restaurant.restaurant_id=manager_restaurants.restaurant_id ' + '\n' +
             'inner join locations_address on address_id_id=address_id ' + '\n' +
-            'inner join locations_postcode on postcode=postcode_id ' + '\n' +
-            'inner join restaurants_coordinates on restaurants_restaurant.restaurant_id=restaurants_coordinates.coordinates_id_id ' + '\n' +
-            'inner join restaurants_ratingstats on restaurants_restaurant.restaurant_id=restaurants_ratingstats.rating_stats_id_id'
+            'inner join locations_postcode on postcode=postcode_id '
             + "\n--------------------------------------------------------------------\n"
         )
         rows = cur.fetchall()
@@ -206,10 +205,10 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
             return HttpResponse("There are no restaurants managed by this account.")
         else:
             # format string
-            restaurant_name = restaurant_name.replace("-", " ")
-            best_selling_item = best_selling_item.replace("-", " ")
-            best_selling_item_dsc = best_selling_item_dsc.replace("-", " ")
-            food_bank = food_bank.replace("-", " ")
+            restaurant_name = restaurant_name.replace("-", " ").strip()
+            best_selling_item = best_selling_item.replace("-", " ").strip()
+            best_selling_item_dsc = best_selling_item_dsc.replace("-", " ").strip()
+            food_bank = food_bank.replace("-", " ").strip()
 
             cur.execute(
                 'update restaurants_restaurant \n' +
@@ -230,7 +229,7 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
                 + "\n--------------------------------------------------------------------\n" +
                 'update restaurants_bestsellingitem \n' +
                 'set item_name=' + "'" + best_selling_item + "', item_description='" + best_selling_item_dsc + "' \n" +
-                'where best_selling_item_id_id=' + "'" + restaurant_id + "'"
+                'where best_selling_item_id_id=' + "'" + restaurant_id + "'" 
                 + "\n--------------------------------------------------------------------\n"
             )
 
@@ -242,8 +241,10 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
                 )
                 ### print query to console
                 print(
+                    "\n--------------------------------------------------------------------\n" +
                     'insert into restaurants_foodbankdonation\n' +
                     "values ('" + food_bank.strip() + "', " + "'" + restaurant_id +"')"
+                    + "\n--------------------------------------------------------------------\n"
                 )
 
             return redirect("/login/" + username + "/" + password + "/" + restaurant_id + "/" )
