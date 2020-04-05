@@ -21,14 +21,6 @@ def create_map():
 
     return map
 
-def fig_to_base64(fig):
-        img = io.BytesIO()
-        fig.savefig(img, format='png',
-                bbox_inches='tight')
-        img.seek(0)
-
-        return base64.b64encode(img.getvalue())
-
 
 
 ### MAIN REQUESTS FUNCTIONS
@@ -171,76 +163,77 @@ def search(requests, restaurant_name='', street_name='', postcode=''):
     return render(requests, 'map.html', context)
 
 
-def show_map_stats(requests):
+def show_map_stats(requests, select):
     
     # Establish cursor to database
     cur = connection.cursor()
 
-    # get restaurants count based on postcode
-    cur.execute(
-        'select postcode_id, count(*) \n' + 
-        'from restaurants_restaurant \n' +
-        'inner join locations_address on address_id_id=address_id \n' +
-        'group by postcode_id'
-    )
-    ### print query to console
-    print(
-        "\n--------------------------------------------------------------------\n" +
-        'select postcode_id, count(*) \n' + 
-        'from restaurants_restaurant \n' +
-        'inner join locations_address on address_id_id=address_id \n' +
-        'group by postcode_id'
-        + "\n--------------------------------------------------------------------\n"
-    )
-    stats_by_postcode = cur.fetchall()
-    # convert data to dataframe
-    pcdf = pandas.DataFrame(stats_by_postcode, columns=('Postcode', 'Number of Restaurants'))
+    if select == 'bypostcode':
+        # get restaurants count based on postcode
+        cur.execute(
+            'select postcode_id, count(*) \n' + 
+            'from restaurants_restaurant \n' +
+            'inner join locations_address on address_id_id=address_id \n' +
+            'group by postcode_id'
+        )
+        ### print query to console
+        print(
+            "\n--------------------------------------------------------------------\n" +
+            'select postcode_id, count(*) \n' + 
+            'from restaurants_restaurant \n' +
+            'inner join locations_address on address_id_id=address_id \n' +
+            'group by postcode_id'
+            + "\n--------------------------------------------------------------------\n"
+        )
+        stats_by_postcode = cur.fetchall()
+        # convert data to dataframe
+        df = pandas.DataFrame(stats_by_postcode, columns=('Postcode', 'Number of Restaurants'))
 
-    # get restaurants count based on price_range
-    cur.execute(
-        'select price_range, count(*) \n' +
-        'from restaurants_restaurant \n' +
-        'group by price_range \n' +
-        'order by length(price_range)'
-    )
-    ### print query to console
-    print(
-        "\n--------------------------------------------------------------------\n" +
-        'select price_range, count(*) \n' +
-        'from restaurants_restaurant \n' +
-        'group by price_range \n' +
-        'order by length(price_range)'
-        + "\n--------------------------------------------------------------------\n"
-    )
-    stats_by_price_range = cur.fetchall()
-    prdf = pandas.DataFrame(stats_by_price_range, columns=('Price Range', 'Number of Restaurants'))
+    elif select == 'bypricerange':
+        # get restaurants count based on price_range
+        cur.execute(
+            'select price_range, count(*) \n' +
+            'from restaurants_restaurant \n' +
+            'group by price_range \n' +
+            'order by length(price_range)'
+        )
+        ### print query to console
+        print(
+            "\n--------------------------------------------------------------------\n" +
+            'select price_range, count(*) \n' +
+            'from restaurants_restaurant \n' +
+            'group by price_range \n' +
+            'order by length(price_range)'
+            + "\n--------------------------------------------------------------------\n"
+        )
+        stats_by_price_range = cur.fetchall()
+        df = pandas.DataFrame(stats_by_price_range, columns=('Price Range', 'Number of Restaurants'))
 
-    # get restaurants count based on ratings
-    cur.execute(
-        'select aggregate_rating, count(*) \n' +
-        'from restaurants_restaurant \n' +
-        'inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id \n' +
-        'group by aggregate_rating \n' +
-        'order by aggregate_rating desc'
-    )
-    ### print query to console
-    print(
-        "\n--------------------------------------------------------------------\n" +
-        'select aggregate_rating, count(*) \n' +
-        'from restaurants_restaurant \n' +
-        'inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id \n' +
-        'group by aggregate_rating \n' +
-        'order by aggregate_rating desc'
-        + "\n--------------------------------------------------------------------\n"
-    )
-    stats_by_ratings = cur.fetchall()
-    rdf = pandas.DataFrame(stats_by_ratings, columns=('Rating', 'Number of Restaurants'))
+    elif select == 'byrating':
+        # get restaurants count based on ratings
+        cur.execute(
+            'select aggregate_rating, count(*) \n' +
+            'from restaurants_restaurant \n' +
+            'inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id \n' +
+            'group by aggregate_rating \n' +
+            'order by aggregate_rating desc'
+        )
+        ### print query to console
+        print(
+            "\n--------------------------------------------------------------------\n" +
+            'select aggregate_rating, count(*) \n' +
+            'from restaurants_restaurant \n' +
+            'inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id \n' +
+            'group by aggregate_rating \n' +
+            'order by aggregate_rating desc'
+            + "\n--------------------------------------------------------------------\n"
+        )
+        stats_by_ratings = cur.fetchall()
+        df = pandas.DataFrame(stats_by_ratings, columns=('Rating', 'Number of Restaurants'))
     
     context = {
-        'stats_by_postcode': pcdf.to_html(classes=['table'], index=False, justify='center'),
-        'stats_by_price_range': prdf.to_html(classes=['table'], index=False, justify='center'),
-        'stats_by_rating': rdf.to_html(classes=['table'], index=False, justify='center'),
-        # 'stats_by_postcode': '<img src="data:image/png;base64, {}">'.format(fig_to_base64(pcdf).decode('utf-8'))
+        'map_stats': df.to_html(classes=['table', 'table-bordered', 'table-hover', ], table_id='df_table',
+                          justify='center', render_links=True, escape=False, index=False, border=0)
     }
 
     return render(requests, 'mapstats.html', context)

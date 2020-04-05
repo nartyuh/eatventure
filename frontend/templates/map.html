@@ -31,9 +31,19 @@
             window.location.assign("http://" + host_url + "/login/");
         }
 
-        function show_map_stats() {
+        function show_pc_stats() {
             var host_url = window.location.host;
-            window.location.assign("http://" + host_url + "/mapstats/");
+            window.location.assign("http://" + host_url + "/mapstats/bypostcode/");
+        }
+
+        function show_pr_stats() {
+            var host_url = window.location.host;
+            window.location.assign("http://" + host_url + "/mapstats/bypricerange/");
+        }
+
+        function show_rating_stats() {
+            var host_url = window.location.host;
+            window.location.assign("http://" + host_url + "/mapstats/byrating/");
         }
     </script>
 </head>
@@ -49,7 +59,16 @@
                 <input class="form-control mr-sm-2" type="text" placeholder="Street name" aria-label="Street name" id="street-name-search">
                 <input class="form-control mr-sm-2" type="text" placeholder="Postcode" aria-label="Postcode" id="postcode-search">
                 <button class="btn aqua-gradient btn-rounded btn-sm mr-sm-2 my-0" type="button" onclick="search();">Search</button>
-                <button class="btn aqua-gradient btn-rounded btn-sm mr-sm-2 my-0" type="button" onclick="show_map_stats();">Map Stats</button>
+                <div class="dropdown">
+                    <button class="btn aqua-gradient btn-rounded btn-sm mr-sm-2 my-0 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Map Stats
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#" onclick="show_pc_stats();">By postcode</a>
+                        <a class="dropdown-item" href="#" onclick="show_pr_stats();">By price range</a>
+                        <a class="dropdown-item" href="#" onclick="show_rating_stats();">By rating</a>
+                    </div>
+                </div>
                 <p class="aqua-gradient my-0">{{ results_count | safe }}</p>
             </form>
 
