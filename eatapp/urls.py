@@ -24,7 +24,6 @@ urlpatterns = [
     path('login/<slug:username>/<slug:password>/', include('restaurant_management.urls')),
     path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/', include('restaurant_management.urls')),
     re_path(r'^(?P<username>[\w|\W]+)/(?P<password>[\w|\W]+)/(?P<restaurant_id>[\w|\W]+)/update/(?P<restaurant_name>[\w|\W]+)/(?P<best_selling_item>[\w|\W]+)/(?P<best_selling_item_dsc>[\w|\W]+)/(?P<food_bank>[\w|\W]+)/', include('restaurant_management.urls')),
-    # path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/update/<slug:restaurant_name>/<slug:best_selling_item>/<slug:best_selling_item_dsc>/<slug:food_bank>/', include('restaurant_management.urls')),
     path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/delete/', include('restaurant_management.urls')),
     path('admin/', admin.site.urls),
 ]

@@ -11,15 +11,15 @@
         function search() {
             var res_name_value = document.getElementById("restaurant-name-search").value;
             if (res_name_value.length == 0) {
-                res_name_value = "-";
+                res_name_value = " ";
             }
             var street_name_value = document.getElementById('street-name-search').value;
             if (street_name_value.length == 0) {
-                street_name_value = "-";
+                street_name_value = " ";
             }
             var postcode_value = document.getElementById('postcode-search').value;
             if (postcode_value.length == 0) {
-                postcode_value = "-"
+                postcode_value = " "
             }
             var host_url = window.location.host;
             request_url = "http://" + host_url + "/search/" + res_name_value + "/" + street_name_value + "/" + postcode_value + "/";

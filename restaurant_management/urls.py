@@ -8,6 +8,5 @@ urlpatterns = [
     path('<slug:username>/<slug:password>/', views.login),
     path('<slug:username>/<slug:password>/<slug:restaurant_id>/', views.view_restaurant),
     re_path(r'^(?P<username>[\w|\W]+)/(?P<password>[\w|\W]+)/(?P<restaurant_id>[\w|\W]+)/update/(?P<restaurant_name>[\w|\W]+)/(?P<best_selling_item>[\w|\W]+)/(?P<best_selling_item_dsc>[\w|\W]+)/(?P<food_bank>[\w|\W]+)/$', views.update),
-    # path('<slug:username>/<slug:password>/<slug:restaurant_id>/update/<slug:restaurant_name>/<slug:best_selling_item>/<slug:best_selling_item_dsc>/<slug:food_bank>/', views.update),
     path('<slug:username>/<slug:password>/<slug:restaurant_id>/delete/', views.delete),
 ]
