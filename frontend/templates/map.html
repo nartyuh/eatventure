@@ -9,15 +9,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
         function search() {
-            var res_name_value = document.getElementById("restaurant-name-search").value.replace(/ /g, "-");
+            var res_name_value = document.getElementById("restaurant-name-search").value;
             if (res_name_value.length == 0) {
                 res_name_value = "-";
             }
-            var street_name_value = document.getElementById('street-name-search').value.replace(/ /g, "-");
+            var street_name_value = document.getElementById('street-name-search').value;
             if (street_name_value.length == 0) {
                 street_name_value = "-";
             }
-            var postcode_value = document.getElementById('postcode-search').value.replace(/ /g, "-");
+            var postcode_value = document.getElementById('postcode-search').value;
             if (postcode_value.length == 0) {
                 postcode_value = "-"
             }

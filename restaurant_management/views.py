@@ -205,10 +205,10 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
             return HttpResponse("There are no restaurants managed by this account.")
         else:
             # format string
-            restaurant_name = restaurant_name.replace("-", " ").strip()
-            best_selling_item = best_selling_item.replace("-", " ").strip()
-            best_selling_item_dsc = best_selling_item_dsc.replace("-", " ").strip()
-            food_bank = food_bank.replace("-", " ").strip()
+            best_selling_item = best_selling_item.strip().replace("'", "''")
+            best_selling_item_dsc = best_selling_item_dsc.strip().replace("'", "''")
+            food_bank = food_bank.strip().replace("'", "''")
+
 
             cur.execute(
                 'update restaurants_restaurant \n' +
@@ -234,7 +234,7 @@ def update(requests, username, password, restaurant_id, restaurant_name, best_se
             )
 
             # insert a record to restaurants_foodbankdonation if the restaurant decides to donate to a food bank
-            if len(food_bank.strip()) != 0:
+            if len(food_bank) != 0:
                 cur.execute(
                     'insert into restaurants_foodbankdonation\n' +
                     "values ('" + food_bank.strip() + "', " + "'" + restaurant_id +"')"

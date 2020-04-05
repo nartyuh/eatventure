@@ -88,16 +88,15 @@ def map(requests):
 
 def search(requests, restaurant_name='', street_name='', postcode=''):
 
+    # reformat string args
+    restaurant_name = restaurant_name.strip().upper()
+    postcode = postcode.strip().upper()
+    street_name = street_name.strip().upper()
+
     # Establish cursor to database
     cur = connection.cursor()
 
     map = create_map()
-
-    # reformat string args
-    restaurant_name = restaurant_name.replace('-', ' ').strip().upper()
-    postcode = postcode.replace('-', ' ').strip().upper()
-    street_name = street_name.replace('-', ' ').strip().upper()
-
 
     cur.execute(
         'select restaurant_name, longitude, latitude, aggregate_rating, image_url, concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode)\n' +

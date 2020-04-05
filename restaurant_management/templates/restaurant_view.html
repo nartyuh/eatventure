@@ -47,12 +47,13 @@
         function query_update() {
             confirm("Are you sure that you want to make these changes?");
 
-            restaurant_name = document.getElementById("restaurant-name").value.replace(/ /g, "-");
-            best_selling_item = document.getElementById("best-selling-item").value.replace(/ /g, "-");
-            best_selling_item_dsc = document.getElementById("best-selling-item-dsc").value.replace(/ /g, "-");
-            food_bank = document.getElementById("food-bank").value.replace(/ /g, "-");
-            if (food_bank.length == 0)
-                food_bank = "-"
+            restaurant_name = document.getElementById("restaurant-name").value;
+            best_selling_item = document.getElementById("best-selling-item").value;
+            best_selling_item_dsc = document.getElementById("best-selling-item-dsc").value;
+            food_bank = document.getElementById("food-bank").value;
+            if (food_bank.length == 0) {
+                food_bank = " ";
+            }
 
             base_url = window.location.href;
 

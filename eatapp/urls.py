@@ -14,16 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 urlpatterns = [
     path('', include('frontend.urls')),
-    path('search/<slug:restaurant_name>/<slug:street_name>/<slug:postcode>/', include('frontend.urls')),
+    re_path(r'^search/(?P<restaurant_name>[\w|\W]+)/(?P<street_name>[\w|\W]+)/(?P<postcode>[\w|\W]+)/', include('frontend.urls')),
     path('mapstats/', include('frontend.urls')),
     path('login/', include('restaurant_management.urls')),
     path('login/<slug:username>/<slug:password>/', include('restaurant_management.urls')),
     path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/', include('restaurant_management.urls')),
-    path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/update/<slug:restaurant_name>/<slug:best_selling_item>/<slug:best_selling_item_dsc>/<slug:food_bank>/', include('restaurant_management.urls')),
+    re_path(r'^(?P<username>[\w|\W]+)/(?P<password>[\w|\W]+)/(?P<restaurant_id>[\w|\W]+)/update/(?P<restaurant_name>[\w|\W]+)/(?P<best_selling_item>[\w|\W]+)/(?P<best_selling_item_dsc>[\w|\W]+)/(?P<food_bank>[\w|\W]+)/', include('restaurant_management.urls')),
+    # path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/update/<slug:restaurant_name>/<slug:best_selling_item>/<slug:best_selling_item_dsc>/<slug:food_bank>/', include('restaurant_management.urls')),
     path('login/<slug:username>/<slug:password>/<slug:restaurant_id>/delete/', include('restaurant_management.urls')),
     path('admin/', admin.site.urls),
 ]
