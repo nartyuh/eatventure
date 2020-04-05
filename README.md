@@ -1,9 +1,3 @@
 # EatVenture
 
-```
-python manage.py migrate
-```
-
-```
-python manage.py runserver
-```
+A README is coming. In the meanwhile, please check out the website http://eatventure.herokuapp.com/
