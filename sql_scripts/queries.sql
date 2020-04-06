@@ -60,6 +60,103 @@ order by aggregate_rating desc
 
 -- Projection queries
 --------------------------------------------------------------------
+select restaurant_name, concat(street_num, ', ', street_name, ', ', city, ', ', state, ' ', postcode)
+from restaurants_restaurant
+inner join locations_address on address_id_id=address_id
+inner join locations_postcode on postcode_id=postcode
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+select restaurant_name, concat(cast(longitude as varchar), ', ', cast(latitude as varchar))
+from restaurants_restaurant
+inner join restaurants_coordinates on restaurant_id=coordinates_id_id
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+select restaurant_name, aggregate_rating, review_count
+from restaurants_restaurant
+inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id
+--------------------------------------------------------------------
+
+
+-- Join Queries
+--------------------------------------------------------------------
+select postcode_id, count(*)
+from restaurants_restaurant
+inner join locations_address on address_id_id=address_id
+group by postcode_id
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+select price_range, count(*)
+from restaurants_restaurant
+group by price_range
+order by length(price_range)
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+select aggregate_rating, count(*)
+from restaurants_restaurant
+inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id
+group by aggregate_rating
+order by aggregate_rating desc
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+select restaurant_name, concat(street_num, ', ', street_name, ', ', city, ', ', state, ' ', postcode)
+from restaurants_restaurant
+inner join locations_address on address_id_id=address_id
+inner join locations_postcode on postcode_id=postcode
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+select restaurant_name, concat(cast(longitude as varchar), ', ', cast(latitude as varchar))
+from restaurants_restaurant
+inner join restaurants_coordinates on restaurant_id=coordinates_id_id
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+select restaurant_name, aggregate_rating, review_count
+from restaurants_restaurant
+inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id
+--------------------------------------------------------------------
+
+
+
+-- Insert queries
+--------------------------------------------------------------------
+insert into restaurants_foodbankdonation
+values ('Blue Sky', 'n1NeUsTJyPn6YfGS9TTDUg')
+--------------------------------------------------------------------
+
+
+-- Delete queries
+--------------------------------------------------------------------
+delete
+from restaurant_management_manageraccount
+where username='huytran' and password='12345'
+--------------------------------------------------------------------
+
+
+-- Update queries
+--------------------------------------------------------------------
+update restaurants_restaurant
+set restaurant_name='Prado Cafe'
+where restaurant_id='n1NeUsTJyPn6YfGS9TTDUg'
+--------------------------------------------------------------------
+update restaurants_bestsellingitem
+set item_name='Cappuccino', item_description='an espresso-based coffee drink that originated in Italy'
+where best_selling_item_id_id='n1NeUsTJyPn6YfGS9TTDUg'
+--------------------------------------------------------------------
+
+
+-- Queries we used that have not been listed
+--------------------------------------------------------------------
+select username
+from restaurant_management_manageraccount
+where username='huytran' and password='12345'
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+select restaurants_restaurant.restaurant_id, restaurant_name, concat(street_num, ', ', street_name, ', ', city, ', ', state, ' ', postcode), manager_id
+from (select restaurant_id, manager_id from restaurant_management_matchmanagertorestaurant where manager_id='huytran') as manager_restaurants
+inner join restaurants_restaurant on restaurants_restaurant.restaurant_id=manager_restaurants.restaurant_id
+inner join locations_address on address_id_id=address_id
+inner join locations_postcode on postcode=postcode_id
+--------------------------------------------------------------------
+--------------------------------------------------------------------
 select restaurant_name, concat(street_num, ', ', street_name, ', ', city, ', ', state, ' ', postcode),
 concat(cast(longitude as varchar), ', ', cast(latitude as varchar)),
 price_range, aggregate_rating, review_count, item_name, item_description
@@ -69,55 +166,10 @@ inner join locations_postcode on postcode=postcode_id
 inner join restaurants_coordinates on restaurants_restaurant.restaurant_id=restaurants_coordinates.coordinates_id_id
 inner join restaurants_ratingstats on restaurants_restaurant.restaurant_id=restaurants_ratingstats.rating_stats_id_id
 inner join restaurants_bestsellingitem on restaurants_restaurant.restaurant_id=restaurants_bestsellingitem.best_selling_item_id_id
-where restaurants_restaurant.restaurant_id='sLBJg33T9LfeKmq-FKxssg'
+where restaurants_restaurant.restaurant_id='n1NeUsTJyPn6YfGS9TTDUg'
 --------------------------------------------------------------------
-
-
--- Join Queries
---------------------------------------------------------------------
-select restaurants_restaurant.restaurant_id, restaurant_name, concat(street_num, ', ', street_name, ', ', city, ', ', state, ' ', postcode), manager_id
-from (select restaurant_id, manager_id from restaurant_management_matchmanagertorestaurant where manager_id='testmanager') as manager_restaurants
-inner join restaurants_restaurant on restaurants_restaurant.restaurant_id=manager_restaurants.restaurant_id
-inner join locations_address on address_id_id=address_id
-inner join locations_postcode on postcode=postcode_id
---------------------------------------------------------------------
-
-
--- Insert queries
---------------------------------------------------------------------
-insert into restaurants_foodbankdonation
-values ('AMS Food Bank', 'sLBJg33T9LfeKmq-FKxssg')
---------------------------------------------------------------------
-
-
--- Delete queries
 --------------------------------------------------------------------
 delete
 from restaurant_management_matchmanagertorestaurant
 where manager_id='testmanager' and restaurant_id='sLBJg33T9LfeKmq-FKxssg'
---------------------------------------------------------------------
-
-
--- Update queries
---------------------------------------------------------------------
-update restaurants_restaurant
-set restaurant_name='Caffe Barney'
-where restaurant_id='sLBJg33T9LfeKmq-FKxssg'
---------------------------------------------------------------------
-update restaurants_bestsellingitem
-set item_name='Cappuccino', item_description='An espresso based coffee drink that originated in Italy'
-where best_selling_item_id_id='sLBJg33T9LfeKmq-FKxssg'
---------------------------------------------------------------------
-
-
--- Queries we used that have not been listed
---------------------------------------------------------------------
-select username
-from restaurant_management_manageraccount
-where username='testmanager' and password='testpassword'
---------------------------------------------------------------------
---------------------------------------------------------------------
-select *
-from restaurant_management_matchmanagertorestaurant
-where restaurant_id='sLBJg33T9LfeKmq-FKxssg' and manager_id='testmanager'
 --------------------------------------------------------------------

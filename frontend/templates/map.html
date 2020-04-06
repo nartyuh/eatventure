@@ -45,6 +45,21 @@
             var host_url = window.location.host;
             window.location.assign("http://" + host_url + "/mapstats/byrating/");
         }
+
+        function show_addresses() {
+            var host_url = window.location.host;
+            window.location.assign("http://" + host_url + "/moredetails/byaddresses")
+        }
+
+        function show_coordinates() {
+            var host_url = window.location.host;
+            window.location.assign("http://" + host_url + "/moredetails/bycoordinates")
+        }
+
+        function show_ratings() {
+            var host_url = window.location.host;
+            window.location.assign("http://" + host_url + "/moredetails/byratings")
+        }
     </script>
 </head>
 
@@ -67,6 +82,16 @@
                         <a class="dropdown-item" href="#" onclick="show_pc_stats();">By postcode</a>
                         <a class="dropdown-item" href="#" onclick="show_pr_stats();">By price range</a>
                         <a class="dropdown-item" href="#" onclick="show_rating_stats();">By rating</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn aqua-gradient btn-rounded btn-sm mr-sm-2 my-0 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More Details
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#" onclick="show_addresses();">Addresses</a>
+                        <a class="dropdown-item" href="#" onclick="show_coordinates();">Coordinates</a>
+                        <a class="dropdown-item" href="#" onclick="show_ratings();">Ratings</a>
                     </div>
                 </div>
                 <p class="aqua-gradient my-0">{{ results_count | safe }}</p>

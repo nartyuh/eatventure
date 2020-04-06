@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.shortcuts import HttpResponse
+from django.shortcuts import render, HttpResponse
+from django.http import HttpResponseNotFound
 from django.db import connection
 
 import folium
@@ -231,6 +231,9 @@ def show_map_stats(requests, select):
         stats_by_ratings = cur.fetchall()
         df = pandas.DataFrame(stats_by_ratings, columns=('Rating', 'Number of Restaurants'))
     
+    else:
+        return HttpResponseNotFound('<h1>Invalid selection</h1>')
+    
     context = {
         'map_stats': df.to_html(classes=['table', 'table-bordered', 'table-hover', ], table_id='df_table',
                           justify='center', render_links=True, escape=False, index=False, border=0)
@@ -239,4 +242,70 @@ def show_map_stats(requests, select):
     return render(requests, 'mapstats.html', context)
 
 
+def show_more_details(requests, select):
+
+    # Establish cursor to database
+    cur = connection.cursor()
+
+    if select == 'byaddresses':
+        cur.execute(
+            'select restaurant_name, concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode)\n' +
+            'from restaurants_restaurant\n' +
+            'inner join locations_address on address_id_id=address_id\n' +
+            'inner join locations_postcode on postcode_id=postcode\n'
+        )
+        ### print query to console
+        print(
+            "\n--------------------------------------------------------------------\n" +
+            'select restaurant_name, concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode)\n' +
+            'from restaurants_restaurant\n' +
+            'inner join locations_address on address_id_id=address_id\n' +
+            'inner join locations_postcode on postcode_id=postcode\n'
+            + "\n--------------------------------------------------------------------\n"
+        )
+        rows = cur.fetchall()
+        df = pandas.DataFrame(rows, columns=('Restaurant', 'Address'))
     
+    elif select == 'bycoordinates':
+        cur.execute(
+            'select restaurant_name, concat(cast(longitude as varchar), \', \', cast(latitude as varchar))\n' +
+            'from restaurants_restaurant\n' +
+            'inner join restaurants_coordinates on restaurant_id=coordinates_id_id'
+        )
+        ### print query to console
+        print(
+            "\n--------------------------------------------------------------------\n" +
+            'select restaurant_name, concat(cast(longitude as varchar), \', \', cast(latitude as varchar))\n' +
+            'from restaurants_restaurant\n' +
+            'inner join restaurants_coordinates on restaurant_id=coordinates_id_id'
+            + "\n--------------------------------------------------------------------\n"
+        )
+        rows = cur.fetchall()
+        df = pandas.DataFrame(rows, columns=('Restaurant', 'Coordinates'))
+
+    elif select == 'byratings':
+        cur.execute(
+            'select restaurant_name, aggregate_rating, review_count\n' +
+            'from restaurants_restaurant\n' +
+            'inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id'
+        )
+        ### print query to console
+        print(
+            "\n--------------------------------------------------------------------\n" +
+            'select restaurant_name, aggregate_rating, review_count\n' +
+            'from restaurants_restaurant\n' +
+            'inner join restaurants_ratingstats on restaurant_id=rating_stats_id_id'
+            + "\n--------------------------------------------------------------------\n"
+        )
+        rows = cur.fetchall()
+        df = pandas.DataFrame(rows, columns=('Restaurant', 'Rating', 'Number of Reviews'))
+    
+    else:
+        return HttpResponseNotFound('<h1>Invalid selection</h1>')
+
+    context = {
+        'more_details': df.to_html(classes=['table', 'table-bordered', 'table-hover', ], table_id='df_table',
+                          justify='center', render_links=True, escape=False, index=False, border=0)
+    }
+
+    return render(requests, 'moredetails.html', context)
