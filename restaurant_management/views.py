@@ -26,17 +26,6 @@ def login(requests, username, password):
         'where username=' + "'" + username + "'" +
         " and " + "password=" + "'" + password + "'"
     )
-
-    ### print query to console
-    print(
-        "\n--------------------------------------------------------------------\n" +
-        'select username ' + '\n' +
-        'from restaurant_management_manageraccount ' + '\n' +
-        'where username=' + "'" + username + "'" +
-        " and " + "password=" + "'" + password + "'"
-        + "\n--------------------------------------------------------------------\n"
-    )
-
     rows = cur.fetchall()
 
     if len(rows) == 0:
@@ -52,16 +41,6 @@ def login(requests, username, password):
             'inner join restaurants_restaurant on restaurants_restaurant.restaurant_id=manager_restaurants.restaurant_id ' + '\n' +
             'inner join locations_address on address_id_id=address_id ' + '\n' +
             'inner join locations_postcode on postcode=postcode_id '
-        )
-        ### print query to console
-        print(
-            "\n--------------------------------------------------------------------\n" +
-            'select restaurants_restaurant.restaurant_id, restaurant_name, concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode), manager_id ' + "\n" +
-            'from (select restaurant_id, manager_id from restaurant_management_matchmanagertorestaurant where manager_id=' + "'" + rows[0][0] + "') as manager_restaurants " + '\n' +
-            'inner join restaurants_restaurant on restaurants_restaurant.restaurant_id=manager_restaurants.restaurant_id ' + '\n' +
-            'inner join locations_address on address_id_id=address_id ' + '\n' +
-            'inner join locations_postcode on postcode=postcode_id '
-            + "\n--------------------------------------------------------------------\n"
         )
         rows = cur.fetchall()
 
@@ -86,10 +65,6 @@ def login(requests, username, password):
 
 
 def view_restaurant(requests, username, password, restaurant_id):
-
-    print(username)
-    print(password)
-    print(restaurant_id)
 
     # Establish cursor to database
     cur = connection.cursor()
@@ -123,23 +98,6 @@ def view_restaurant(requests, username, password, restaurant_id):
             'inner join restaurants_ratingstats on restaurants_restaurant.restaurant_id=restaurants_ratingstats.rating_stats_id_id' + '\n' +
             'inner join restaurants_bestsellingitem on restaurants_restaurant.restaurant_id=restaurants_bestsellingitem.best_selling_item_id_id ' + '\n' +
             'where restaurants_restaurant.restaurant_id=' + "'" + restaurant_id + "'"
-        )
-        ### print query to console
-        print(
-            "\n--------------------------------------------------------------------\n" +
-            'select ' +
-            'restaurant_name, ' +
-            'concat(street_num, \', \', street_name, \', \', city, \', \', state, \' \', postcode), ' + '\n' +
-            'concat(cast(longitude as varchar), \', \', cast(latitude as varchar)), ' + '\n' +
-            'price_range, aggregate_rating, review_count, item_name, item_description ' + '\n' +
-            'from restaurants_restaurant ' + '\n' +
-            'inner join locations_address on address_id_id=address_id ' + '\n' +
-            'inner join locations_postcode on postcode=postcode_id ' + '\n' +
-            'inner join restaurants_coordinates on restaurants_restaurant.restaurant_id=restaurants_coordinates.coordinates_id_id ' + '\n' +
-            'inner join restaurants_ratingstats on restaurants_restaurant.restaurant_id=restaurants_ratingstats.rating_stats_id_id' + '\n' +
-            'inner join restaurants_bestsellingitem on restaurants_restaurant.restaurant_id=restaurants_bestsellingitem.best_selling_item_id_id ' + '\n' +
-            'where restaurants_restaurant.restaurant_id=' + "'" + restaurant_id + "'"
-            + "\n--------------------------------------------------------------------\n"
         )
         # get output from query
         rows = cur.fetchall()
@@ -194,15 +152,6 @@ def update_restaurant(requests, username, password, restaurant_id, restaurant_na
             'where restaurant_id=' + "'" + restaurant_id + "'" +
             " and " + "manager_id=" + "'" + username + "'"
         )
-        ### print query to console
-        print(
-            "\n--------------------------------------------------------------------\n" +
-            'select * ' + '\n' +
-            'from restaurant_management_matchmanagertorestaurant ' + '\n' +
-            'where restaurant_id=' + "'" + restaurant_id + "'" +
-            " and " + "manager_id=" + "'" + username + "'"
-            + "\n--------------------------------------------------------------------\n"
-        )
         rows = cur.fetchall()
 
         if (len(rows) == 0):
@@ -225,33 +174,12 @@ def update_restaurant(requests, username, password, restaurant_id, restaurant_na
                 'set item_name=' + "'" + best_selling_item + "', item_description='" + best_selling_item_dsc + "' \n" +
                 'where best_selling_item_id_id=' + "'" + restaurant_id + "'" 
             )
-            ### print query to console
-            print(
-                "\n--------------------------------------------------------------------\n" +
-                'update restaurants_restaurant \n' +
-                'set restaurant_name=' + "'" + restaurant_name + "' \n" +
-                'where restaurant_id=' + "'" + restaurant_id + "'"
-                + "\n--------------------------------------------------------------------\n" +
-                'update restaurants_bestsellingitem \n' +
-                'set item_name=' + "'" + best_selling_item + "', item_description='" + best_selling_item_dsc + "' \n" +
-                'where best_selling_item_id_id=' + "'" + restaurant_id + "'" 
-                + "\n--------------------------------------------------------------------\n"
-            )
-
             # insert a record to restaurants_foodbankdonation if the restaurant decides to donate to a food bank
             if len(food_bank) != 0:
                 cur.execute(
                     'insert into restaurants_foodbankdonation\n' +
                     "values ('" + food_bank.strip() + "', " + "'" + restaurant_id +"')"
                 )
-                ### print query to console
-                print(
-                    "\n--------------------------------------------------------------------\n" +
-                    'insert into restaurants_foodbankdonation\n' +
-                    "values ('" + food_bank.strip() + "', " + "'" + restaurant_id +"')"
-                    + "\n--------------------------------------------------------------------\n"
-                )
-
             return redirect("/login/" + username + "/" + password + "/" )
 
 
@@ -280,15 +208,6 @@ def delete_restaurant(requests, username, password, restaurant_id):
             'from restaurant_management_matchmanagertorestaurant \n' +
             'where manager_id=' + "'" + username + "' and restaurant_id='" + restaurant_id + "'"  
         )
-        # print query to console
-        print(
-            "\n--------------------------------------------------------------------\n" +
-            'delete \n' +
-            'from restaurant_management_matchmanagertorestaurant \n' +
-            'where manager_id=' + "'" + username + "' and restaurant_id='" + restaurant_id + "'"
-            + "\n--------------------------------------------------------------------\n"  
-        )
-
         return redirect("/login/" + username + "/" + password + "/" )
 
 
@@ -317,13 +236,4 @@ def delete_account(requests, username, password):
             'from restaurant_management_manageraccount\n' +
             "where username='" + username + "' and password='" + password + "'" 
         )
-        ### print query to the console
-        print(
-            "\n--------------------------------------------------------------------\n" +
-            'delete\n' +
-            'from restaurant_management_manageraccount\n' +
-            "where username='" + username + "' and password='" + password + "'"
-            + "\n--------------------------------------------------------------------\n"
-        )
-
         return redirect("/login/")
