@@ -1,3 +1,5 @@
 # EatVenture
 
-A README is coming. In the meanwhile, please check out the website http://eatventure.herokuapp.com/
+## Project Beta Run
+
+To see the beta run: http://eatventure.tranquanghuy.me/
