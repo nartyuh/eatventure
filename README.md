@@ -7,6 +7,7 @@ To see the beta run: http://eatventure.tranquanghuy.me/
 ## Table of Contents
 
    * [Project Description](#project-description)
+   * [Techonologies](#technologies)
    * [App Screenshots](#app-screenshots)
    * [Schema and Sample SQL Queries](#schema-and-sample-sql-queries)
 
@@ -25,6 +26,14 @@ To see the beta run: http://eatventure.tranquanghuy.me/
 <br />
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As a result, there will be two types of users in this app: the restaurant managers (those who are going to put their restaurants on the app and will have the ability to set prices, menus, etc), and the customers who are looking for restaurants to eat.
+
+## Technologies
+
+  * Django v3.0.5 (backend)
+  * HTML/CSS/JAVASCRIPT (proof-of-concept frontend)
+  * PostgreSQL
+  * Heroku
+  * Git
 
 ## App Screenshots
 
