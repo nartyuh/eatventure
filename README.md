@@ -4,6 +4,24 @@
 
 To see the beta run: http://eatventure.tranquanghuy.me/
 
+## Table of Contents
+
+<!--ts-->
+   * [gh-md-toc](#gh-md-toc)
+   * [Table of contents](#table-of-contents)
+   * [Installation](#installation)
+   * [Usage](#usage)
+      * [STDIN](#stdin)
+      * [Local files](#local-files)
+      * [Remote files](#remote-files)
+      * [Multiple files](#multiple-files)
+      * [Combo](#combo)
+      * [Auto insert and update TOC](#auto-insert-and-update-toc)
+      * [GitHub token](#github-token)
+   * [Tests](#tests)
+   * [Dependency](#dependency)
+<!--te-->
+
 ## Project Description
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RestaurantAdvisor is the "google map" for restaurants. It is built to help travellers find the best nearby restaurants and get the necessary knowledge about the restaurant that they are looking into.
