@@ -19,3 +19,9 @@ To see the beta run: http://eatventure.tranquanghuy.me/
 <br />
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As a result, there will be two types of users in this app: the restaurant managers (those who are going to put their restaurants on the app and will have the ability to set prices, menus, etc), and the customers who are looking for restaurants to eat.
+
+## App Screenshots
+
+
+
+
