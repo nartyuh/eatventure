@@ -22,6 +22,9 @@ To see the beta run: http://eatventure.tranquanghuy.me/
 
 ## App Screenshots
 
+![alt text](https://raw.githubusercontent.com/dekutran99/Eatventure/master/readmepics/main.PNG)
+![alt text](https://raw.githubusercontent.com/dekutran99/Eatventure/master/readmepics/search.PNG)
 ![alt text](https://raw.githubusercontent.com/dekutran99/Eatventure/master/readmepics/details.PNG)
-
-
+![alt text](https://raw.githubusercontent.com/dekutran99/Eatventure/master/readmepics/login.PNG)
+![alt text](https://raw.githubusercontent.com/dekutran99/Eatventure/master/readmepics/managerview.PNG)
+![alt text](https://raw.githubusercontent.com/dekutran99/Eatventure/master/readmepics/restaurantview.PNG)
