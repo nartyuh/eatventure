@@ -39,7 +39,7 @@ To see the beta run: http://eatventure.tranquanghuy.me/
 
 #### Schema
 
-```
+```sql
 --
 -- Create model Country
 --
@@ -180,7 +180,7 @@ CREATE INDEX "restaurants_imageurl_image_url_idx" ON "restaurants_imageurl" ("im
 
 #### Sample SQL Queries
 
-```
+```sql
 -- Division queries
 --------------------------------------------------------------------
 select restaurant_name, longitude, latitude, aggregate_rating, image_url, concat(street_num, ', ', street_name, ', ', city, ', ', state, ' ', postcode)
