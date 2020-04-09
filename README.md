@@ -22,6 +22,6 @@ To see the beta run: http://eatventure.tranquanghuy.me/
 
 ## App Screenshots
 
-
+![alt text](https://raw.githubusercontent.com/dekutran99/Eatventure/master/readmepics/details.PNG)
 
 
