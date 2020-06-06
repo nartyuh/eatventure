@@ -1,4 +1,4 @@
-Django==3.0.5
+Django==3.0.7
 dj_database_url==0.5.0
 pypostalcode==0.3.4
 branca==0.4.0
