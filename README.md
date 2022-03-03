@@ -2,10 +2,6 @@
 
 ***\*\* No longer active \*\****
 
-## Project Beta Run
-
-To see the beta run: http://eatventure.tranquanghuy.me/
-
 ## Table of Contents
 
    * [Project Description](#project-description)
